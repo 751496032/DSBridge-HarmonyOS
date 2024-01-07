@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+<!--        <script src="./m-dsBridge.js"></script>-->
+        <script src="https://cdn.jsdelivr.net/npm/m-dsbridge@1.0.0/dsBridge.js"></script>
+<!--        <script src="https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js"> </script>-->
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        h1, p, ul, ol {
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            height: 100%;
+            padding: 0 7px;
+        }
+
+        .call-native {
+            margin: 10px;
+        }
+
+        .msg {
+            margin: 10px;
+            color: #00ff00
+        }
+
+
+    </style>
+
+</head>
+<body>
+<div></div>
+<div class="wrapper">
+
+    <button class="call-native" onclick="callNative3()">调用原生call - testSync同步方法</button>
+    <button class="call-native" onclick="callNative4()">调用原生call - testAsync异步方法</button>
+
+    <p class="msg"></p>
+</div>
+</body>
+<script>
+    function showAlert() {
+        alert("原生调用JS函数")
+        return "H5 showAlert()函数的返回值"
+    }
+
+    function show(msg) {
+        alert("原生调用JS带参的函数 ")
+        return msg + " H5 show()函数的返回值"
+    }
+
+    const callNative3 = () => {
+        // 同步
+        let msg = dsBridge.call('testSync', JSON.stringify({data: 100}))
+        updateMsg(msg)
+    }
+
+    const callNative4 = () => {
+        // 同步
+        dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
+            updateMsg(msg)
+        })
+
+    }
+
+    const register1 = () => {
+        dsBridge.register('showAlert', function (a, b, c) {
+            // return "原生调用JS showAlert函数"
+             alert("原生调用JS showAlert函数" + a + " " + b + " " + c)
+            return true
+        })
+    }
+
+
+    const register2 = () => {
+        dsBridge.registerAsyn('showAlertAsync', function (a, b, c, callback) {
+            let counter = 0
+            let id = setInterval(() => {
+                if (counter < 5) {
+                    callback(counter, false)
+                    alert("原生调用JS showAlertAsync函数" + a + " " + b + " " + c + " " + counter)
+                    counter++
+                } else {
+                    callback(counter, true)
+                     alert("原生调用JS showAlertAsync函数" + a + " " + b + " " + c + " " + counter)
+                    clearInterval(id)
+                }
+            }, 1000)
+
+        })
+    }
+
+
+    register1()
+    register2()
+
+
+    function updateMsg(msg) {
+        let msgEle = document.querySelector(".msg");
+        msgEle.innerHTML = msg
+    }
+
+
+</script>
+</html>

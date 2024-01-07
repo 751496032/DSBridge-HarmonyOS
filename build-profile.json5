@@ -1,0 +1,45 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.cer",
+          "storePassword": "0000001BE6DCCC7A48597EC3853F865B07B74A0360132232F434D697C232F9A875BAA137A8D26E3499CD8C",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B7BA16956457E3498A2205C7B56684CF78247E97BFED2C4DDD7BA095AFE92816ADD18A439079C9F",
+          "profile": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.p12"
+        }
+      }
+    ],
+    "compileSdkVersion": 9,
+    "compatibleSdkVersion": 9,
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "library",
+      "srcPath": "./library"
+    }
+  ]
+}

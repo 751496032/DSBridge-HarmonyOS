@@ -1,0 +1,13 @@
+{
+  "name": "ohos-dsbridge",
+  "version": "1.0.0",
+  "description": "HarmonyOS native and JS interaction, calling each other's functions",
+  "main": "index.ets",
+  "author": "HZWei",
+  "license": "Apache-2.0",
+  "keywords": ['JavaScript','鸿蒙','harmonyOS','dsBridge','android'],
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {}
+}
