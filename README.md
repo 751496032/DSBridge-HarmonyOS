@@ -31,7 +31,7 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 ## 安装
 
 ```text
-ohpm install @hzw/dsbridge
+ohpm install @hzw/ohos-dsbridge
 ```
 
 ## 使用
