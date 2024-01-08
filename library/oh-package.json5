@@ -1,5 +1,5 @@
 {
-  "name": "@hzw/dsbridge",
+  "name": "@hzw/ohos-dsbridge",
   "version": "1.0.0",
   "description": "HarmonyOS native and JS interaction, calling each other's functions",
   "main": "index.ets",
