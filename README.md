@@ -2,16 +2,16 @@
 
 ## 介绍
 
-HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript交互，相互调用彼此的功能。
+HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成交互，相互调用彼此的功能。
 
-目前兼容Android、iOS第三方DSBridge库的核心功能，基本保持原来的使用方式，可以放心接入，后续会持续迭代保持与Android库相同的功能，从而减少前端和客户端(HarmonyOS/Android/iOS)的适配工作。
+目前兼容Android、iOS第三方DSBridge库的核心功能，基本保持原来的使用方式，可以放心接入到项目中，后续会持续迭代保持与Android库相同的功能，减少前端和客户端的适配工作。
 
 支持的功能：
 
 - 支持以类的方式集中统一管理API；
 - 支持同步和异步调用；
 - 支持进度回调/回传：一次调用，多次返回；
-- 支持API是否存在的测试 (当前仅支持检测原生API，在call()方法会自检测)
+- 支持API是否存在的测试 (当前仅支持检测原生API，在调用call()方法时会自检测)
 
 暂不支持的功能：
 
@@ -31,7 +31,7 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript交互�
 ## 安装
 
 ```text
-ohpm install @hzw/ohos-dsbridge
+ohpm install @hzw/dsbridge
 ```
 
 ## 使用
@@ -39,7 +39,7 @@ ohpm install @hzw/ohos-dsbridge
 ### Native
 
 1、在原生新建一个类继承`BaseBridge`，实现业务API
-, 通过类来集中统一管理API，方法用`@JavaScriptInterface()`标注，是不是很眼熟呢？加一个`@JavaScriptInterface()`标注主要为了使用规范，是自定义的装饰器，与Android保持一致性。
+, 通过类来集中统一管理API，方法用`@JavaScriptInterface()`标注，是不是很眼熟呢，加一个`@JavaScriptInterface()`标注主要为了使用规范，是自定义的装饰器，与Android保持一致性。
 ```typescript
 export class JsBridge extends BaseBridge {
   private cHandler: CompleteHandler = null
@@ -68,7 +68,7 @@ export class JsBridge extends BaseBridge {
 }
 ```
 
-其中异步方法中的形参CompleteHandler，用于异步回调。
+其中方法中的形参`CompleteHandler`，可用于异步回调。
 
 2、在原生Web初始化，通过API类将JS代理对象注入到JS中，如下：
 
@@ -84,7 +84,7 @@ Web({ src: this.localPath, controller: this.controller })
 
 ```
 
-3、在JavaScript中调用原生API
+3、在JavaScript中通过dsBridge对象调用原生API，第一个参数是原生方法名称，第二参数是原生方法接收的参数，异步方法有第三个参数，是回调函数，会接收`CompleteHandler`异步回调结果。
 
 ```typescript
 // 同步
@@ -110,9 +110,9 @@ npm i m-dsbridge
 <script src="https://cdn.jsdelivr.net/npm/m-dsbridge@1.0.0/dsBridge.js"></script>
 ```
 
-或者直接用原Android或iOS的[DSBridge库](https://github.com/wendux/DSBridge-Android)的js脚本也行，可能会存在某些API不支持，前面已经有介绍了，但核心功能API是支持的。
+或者直接用原Android或iOS的[DSBridge库](https://github.com/wendux/DSBridge-Android)的JS脚本也行，可能会存在某些API不支持，前面已经有介绍了，但核心功能API是支持的。
 
-2、JavaScript调用原生API，通过dsBridge对象注册Js函数。
+2、通过dsBridge对象注册Js函数，供原生调用。
 
 ```typescript
 // 注册同步函数
@@ -142,7 +142,7 @@ dsBridge.registerAsyn('showAlertAsync', function (a, b, c, callback) {
 
 其中异步的callback函数，如果最后一个参数返回true则完成整个链接的调用，false则可以一直回调给原生，这个就是JavaScript端的一次调用，多次返回。比如需要将JavaScript端进度数据不间断同步到原生，这时就可以派上用场了。
 
-3、在原生通过API实现类来调用JavaScript注册的函数。
+3、原生通过API实现类来调用JavaScript所注册的函数。
 
 ```typescript
 Button("调用js函数-同步")
@@ -161,13 +161,13 @@ Button("调用js函数-同步")
     }
 ```
 
-`callJs()`方法有三个形参，第一个是Js注册的函数名称，第二个是Js接收函数的形参，第三个是监听Js函数返回结果的函数。
+`callJs()`方法有三个形参，第一个是Js注册的函数名称，第二个是Js接收函数的参数，是一个数组类型，第三个是监听Js函数返回结果的函数。
 另外也提供了与Android库一样调用函数`callHandler()`。
 
 
-### 进度回调
+## 进度回调（一次调用，多次返回）
 
-上面提到了JavaScript端的一次调用，多次回调的情况，在原生端也是支持的，还是有应用场景的，比如将原生的下载进度实时同步到js中，可以通过`CompleteHandler#setProgressData()`方法来实现。
+前面提到了JavaScript端的一次调用，多次回调的情况，在原生端也是支持的，还是有应用场景的，比如将原生的下载进度实时同步到js中，可以通过`CompleteHandler#setProgressData()`方法来实现。
 
 ```typescript
   @JavaScriptInterface()
@@ -185,7 +185,7 @@ Button("调用js函数-同步")
       }
     }, 1000)
 ```
-JavaScript：
+在js中接收回调结果：
 
 ```typescript
 dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
