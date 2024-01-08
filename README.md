@@ -185,7 +185,7 @@ Button("调用js函数-同步")
       }
     }, 1000)
 ```
-在js中接收回调结果：
+JavaScript：
 
 ```typescript
 dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
