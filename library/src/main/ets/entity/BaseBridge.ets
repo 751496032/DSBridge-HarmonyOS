@@ -8,11 +8,13 @@ import {
   NativeCallInfo,
   OnReturnValue,
   CompleteHandler,
-  JavaScriptInterface
+  JavaScriptInterface,
+  OnCloseWindowListener
 } from './Entity'
 import "reflect-metadata"
 import Prompt from '@system.prompt'
 import { LogUtils } from '../utils/LogUtils'
+import router from '@ohos.router'
 
 export class BaseBridge implements JsInterface {
   private controller: WebviewController
@@ -20,6 +22,8 @@ export class BaseBridge implements JsInterface {
   private isInject: boolean = true
   private callID: number = 0
   private handlerMap = new Map<number, OnReturnValue>()
+  private jsClosePageListener?: OnCloseWindowListener
+  private interrupt = false
 
   constructor(controller: WebviewController) {
     this.controller = controller
@@ -59,7 +63,7 @@ export class BaseBridge implements JsInterface {
    * @param params js参数 对应实体类Parameter
    * @returns 如果同步调用，则result#code == 0, 异步返回值result则是没有意义
    */
-  call = (methodName: string, params: string): string => {
+   call = (methodName: string, params: string): any => {
     const m = this.parseNamespace(methodName)
     methodName = m[1]
     LogUtils.d(this + " " + methodName + " " + params)
@@ -75,7 +79,7 @@ export class BaseBridge implements JsInterface {
       }
       async = <boolean> Reflect.getMetadata(MetaData.ASYNC, method)?? false
     } else {
-      Prompt.showToast({ message: `${methodName}方法原生未定义` })
+      Prompt.showToast({ message: `原生${methodName}方法未定义` })
     }
 
     if (method != null) {
@@ -85,12 +89,12 @@ export class BaseBridge implements JsInterface {
       let data: string = (this.isObject(jsParam.data) ? JSON.stringify(jsParam.data) : jsParam.data) as string
       if (async) {
         method.call(this, data, <CompleteHandler> {
-          complete: (value: string) => {
+          complete: (value: string | boolean | number) => {
             result.code = 0
             result.data = value
             this.callbackToJs(jsParam, result)
           },
-          setProgressData: (value: string) => {
+          setProgressData: (value: string | boolean | number) => {
             result.code = 0
             result.data = value
             this.callbackToJs(jsParam, result, false)
@@ -101,12 +105,14 @@ export class BaseBridge implements JsInterface {
         const r = method.call(this, data);
         result.code = 0
         result.data = r
-        // LogUtils.d("sync result: " + r)
+        // // js检查原生方法是否存在
+        // if (methodName.includes("hasNativeMethod")) {
+        //   return r.code === 0
+        // }
       }
 
     } else {
       const err = `call failed: ${methodName} native method does not exist`
-      // LogUtils.e(err)
       result.errMsg = err
     }
     return JSON.stringify(result)
@@ -139,6 +145,7 @@ export class BaseBridge implements JsInterface {
   }
 
   private callbackToJs = (jsParam: Parameter, result: CallResult, complete: boolean = true) => {
+    if (this.interrupt) return;
     let args = JSON.stringify(result)
     let callbackName = jsParam._dscbstub
     LogUtils.d(`${callbackName}(${args})`)
@@ -150,6 +157,7 @@ export class BaseBridge implements JsInterface {
   }
 
   callJs(method: string, args?: any[], jsReturnValueHandler?: OnReturnValue) {
+    if (this.interrupt) return;
     const callInfo = <NativeCallInfo> {
       method,
       callbackId: ++this.callID,
@@ -170,9 +178,18 @@ export class BaseBridge implements JsInterface {
     this.callJs(method, args, jsReturnValueHandler)
   }
 
+  hasJavascriptMethod(method: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      let handler: OnReturnValue = (has: boolean) => {
+        resolve(has)
+      }
+      this.callHandler("_hasJavascriptMethod", [method], handler)
+    })
+  }
+
 
   @JavaScriptInterface(false)
-  returnValue(param: string) {
+  private returnValue(param: string) {
     let p: {
       id?: number,
       complete?: boolean,
@@ -190,9 +207,62 @@ export class BaseBridge implements JsInterface {
   }
 
   @JavaScriptInterface(false)
-  dsinit(param: string) {
+  private dsinit(param: string) {
 
   }
+
+  @JavaScriptInterface(false)
+  private hasNativeMethod(param: string): boolean {
+    const result: {
+      code: number,
+      msg: string
+    } = { code: -1, msg: "" };
+    try {
+      const p: {
+        name: string,
+        type
+      } = JSON.parse(param);
+      const m = this.parseNamespace(p.name)
+      let methodName = m[1]
+      const prototype = Reflect.getPrototypeOf(this);
+      const method = prototype[methodName];
+      if (method != null) {
+        const decorator = Reflect.getMetadata(MetaData.METHOD_DECORATE, method)
+        if (!decorator) {
+          const err = `call failed: please add @JavaScriptInterface decorator in the ${methodName} method`
+          result.msg = err
+        } else {
+          result.code = 0
+        }
+      } else {
+        const err = `原生${methodName}方法未定义`
+        result.msg = err
+      }
+    } catch (e) {
+      result.msg = e
+    }
+
+    return result.code ===0
+  }
+
+  setClosePageListener(listener: OnCloseWindowListener) {
+    this.jsClosePageListener = listener
+  }
+
+  @JavaScriptInterface(false)
+  private closePage(param: any) {
+    if (this.jsClosePageListener == null || this.jsClosePageListener() === true) {
+      router.back()
+      this.destroy()
+    }
+  }
+
+  destroy(){
+    this.interrupt = true
+    this.jsClosePageListener = null
+    this.handlerMap.clear()
+  }
+
 }
 
 

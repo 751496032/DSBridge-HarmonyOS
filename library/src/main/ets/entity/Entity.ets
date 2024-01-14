@@ -15,13 +15,13 @@ export interface JsInterface {
  * @param params  JS携带过来的参数，有一个callbackID参数
  * @returns
  */
-  call(methodName: string, params: string): string
+  call(methodName: string, params: string): any
 }
 
 
 export interface CallResult {
   code: number,
-  data?: string  ,
+  data?: string | boolean | number,
   errMsg?: string,
   async?: boolean,
 }
@@ -36,12 +36,12 @@ export interface CompleteHandler {
    * 只能使用一次
    * @param value
    */
-  complete(value: string)
+  complete(value: string | boolean | number)
   /**
    * 可以使用多次
    * @param value
    */
-  setProgressData(value: string)
+  setProgressData(value: string | boolean | number)
 }
 
 export enum MetaData {
@@ -68,4 +68,6 @@ export interface NativeCallInfo {
 }
 
 export type OnReturnValue = (any) => void
+
+export type OnCloseWindowListener = () => boolean
 

@@ -1,9 +1,9 @@
-
 import Prompt from '@system.prompt';
 import { LogUtils } from '../utils/LogUtils';
-import { BaseBridge } from 'library';
-import { CompleteHandler, JavaScriptInterface } from 'library';
-export class JsBridge extends BaseBridge{
+import { BaseBridge } from '@hzw/ohos-dsbridge';
+import { CompleteHandler, JavaScriptInterface } from '@hzw/ohos-dsbridge';
+
+export class JsBridge extends BaseBridge {
   private cHandler: CompleteHandler = null
 
   /**
@@ -14,9 +14,8 @@ export class JsBridge extends BaseBridge{
   @JavaScriptInterface(false)
   testSync(p: string): string {
     LogUtils.d("testSync: " + JSON.stringify(p))
-    return "hello native"
+    return "原生同步testSync方法返回的数据"
   }
-
   /**
    * 异步模版
    * @param p
@@ -26,21 +25,30 @@ export class JsBridge extends BaseBridge{
   testAsync(p: string, handler: CompleteHandler) {
     LogUtils.d("testAsync: " + JSON.stringify(p))
     this.cHandler = handler
-    let counter = 0
-    setInterval(() => {
-      if (counter < 5) {
-        counter++
-        handler.setProgressData("异步返回的数据--" + counter)
+    this.countdown(5, (time) => {
+      if (time === 0) {
+        handler.complete("原生异步testAsync方法返回的数据--结束")
+        handler.complete("原生异步testAsync方法返回的数据--结束2") // 不会被回调
       } else {
-        this.cHandler.complete("异步返回的数据--结束")
-        this.cHandler.complete("异步返回的数据--结束2")
+        handler.setProgressData("原生异步testAsync方法返回的数据--" + time)
       }
-    }, 1000)
+    })
 
 
   }
 
-
-
+  countdown(seconds, callback) {
+    let count = seconds;
+    const interval = setInterval(() => {
+      if (count === 0) {
+        clearInterval(interval);
+        console.log("Finished");
+        callback(count)
+        return;
+      }
+      count--
+      callback(count)
+    }, 1000);
+  }
 }
 

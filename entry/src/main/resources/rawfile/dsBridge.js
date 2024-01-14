@@ -1,4 +1,4 @@
-const dsBridge = {
+const bridge = {
     call: function (method, args, callback) {
         let params = {data: args === undefined ? null : args}
         if (callback != null && typeof callback == 'function') {
@@ -9,7 +9,7 @@ const dsBridge = {
         let paramsStr = JSON.stringify(params)
         let res = ""
         if (window._dsbridge){
-            res = window._dsbridge.call(method, paramsStr)
+             res = window._dsbridge.call(method, paramsStr)
         }
         return JSON.parse(res).data
     },
@@ -25,7 +25,13 @@ const dsBridge = {
     },
     registerAsync: function (method, func) {
         this.register(method, func, true)
-    }
+    },
+    hasNativeMethod: function (method) {
+        return this.call("_dsb.hasNativeMethod", {name: method})
+    },
+    close: function () {
+        this.call("_dsb.closePage")
+    },
 };
 
 (function (){
@@ -36,7 +42,10 @@ const dsBridge = {
         _dsaf: {
             _obs: {}
         },
-        bridge: dsBridge,
+        dsBridge: bridge,
+        close: function () {
+            bridge.close()
+        },
         _handleMessageFromNative: function (info) {
 
             let arg = JSON.parse(info.data);
@@ -47,13 +56,13 @@ const dsBridge = {
             let af = this._dsaf[info.method]
             let callSyn = function (f, ob) {
                 ret.data = f.apply(ob, arg)
-                this.bridge.call("_dsb.returnValue", ret)
+                bridge.call("_dsb.returnValue", ret)
             }
             let callAsync = function (f, ob) {
                 arg.push(function (data, complete) {
                     ret.data = data;
                     ret.complete = complete !== false;
-                    this.bridge.call("_dsb.returnValue", ret)
+                    bridge.call("_dsb.returnValue", ret)
                 })
                 f.apply(ob, arg)
             }
@@ -61,6 +70,8 @@ const dsBridge = {
                 callSyn(f, this._dsf);
             } else if (af) {
                 callAsync(af, this._dsaf);
+            }else {
+                alert("暂不支持命名空间函数")
             }
         }
     }
@@ -69,5 +80,19 @@ const dsBridge = {
         window[attr] = manager[attr]
         console.log(attr)
     }
+
+    dsBridge.register("_hasJavascriptMethod", (method) => {
+        const name = method.split('.')
+        if (name.length < 2) {
+            return !!(_dsf[name] || _dsaf[name])
+        }else {
+            alert("暂不支持命名空间函数检测")
+            return false
+        }
+    })
+
 })();
+
+// module.exports = dsBridge;
+// export default dsBridge;
 

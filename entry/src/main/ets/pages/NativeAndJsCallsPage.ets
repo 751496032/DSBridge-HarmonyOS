@@ -13,6 +13,13 @@ struct NativeAndJsCallsPage {
   @State msg: string = ""
 
   aboutToAppear() {
+    this.jsBridge.setClosePageListener(() => {
+      return true; // false 会拦截关闭页面
+    })
+  }
+
+  aboutToDisappear(){
+    this.jsBridge.destroy()
   }
 
   build() {
@@ -23,7 +30,7 @@ struct NativeAndJsCallsPage {
           .javaScriptAccess(true)
           .javaScriptProxy(this.jsBridge.javaScriptProxy)
           .onAlert((event) => {
-            AlertDialog.show({ message: event.message })
+            // AlertDialog.show({ message: event.message })
             return false
           })
           .onProgressChange((event) => {
@@ -53,9 +60,9 @@ struct NativeAndJsCallsPage {
       Column() {
         Text(this.msg ? "js返回的数据: " + this.msg : "")
           .padding(20)
-        Row() {
-
+        Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
           Button("调用js函数-同步")
+            .margin({ top: 10 })
             .onClick(() => {
               this.jsBridge.callJs("showAlert", [1, 2, '666'], (v) => {
                 this.msg = v + ""
@@ -63,13 +70,26 @@ struct NativeAndJsCallsPage {
             })
 
           Button("调用js函数-异步")
+            .margin({ top: 10 })
             .onClick(() => {
               this.jsBridge.callJs("showAlertAsync", [1, 2, '666'], (v) => {
                 this.msg = v + ""
               })
             })
+
+          Button("检测js注册的函数1")
+            .margin({ top: 10 })
+            .onClick(async () => {
+              let has = await this.jsBridge.hasJavascriptMethod("showAlert")
+              this.msg = `showAlert: ${has}`
+            })
+          Button("检测js注册的函数2")
+            .margin({ top: 10 })
+            .onClick(async () => {
+              let has = await this.jsBridge.hasJavascriptMethod("showAlertAy")
+              this.msg = `showAlertAy: ${has}`
+            })
         }
-        .justifyContent(FlexAlign.Center)
         .width('100%')
       }
       .width('100%')
@@ -79,7 +99,5 @@ struct NativeAndJsCallsPage {
     .width('100%')
     .height('100%')
   }
-
-
 }
 

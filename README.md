@@ -6,23 +6,21 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 
 目前兼容Android、iOS第三方DSBridge库的核心功能，基本保持原来的使用方式，可以放心接入到项目中，后续会持续迭代保持与Android库相同的功能，减少前端和客户端的适配工作。
 
-支持的功能：
+特性：
 
 - 支持以类的方式集中统一管理API；
 - 支持同步和异步调用；
 - 支持进度回调/回传：一次调用，多次返回；
-- 支持API是否存在的测试 (当前仅支持检测原生API，在调用call()方法时会自检测)
+- 支持API是否存在的测试；
+- 支持Javascript关闭页面事件的监听与拦截，
+- 暂不支持API命名空间，后续会根据需求决定是否支持。
 
-暂不支持的功能：
-
-- 不支持API命名空间
-- 不支持JavaScript的事件侦听器关闭页面
 
 源码：
 
-* DSBridge-Android:https://github.com/wendux/DSBridge-Android
-* DSBridge-HarmonyOS:https://github.com/751496032/DSBridge-HarmonyOS
-* DSBridge-IOS:https://github.com/wendux/DSBridge-IOS
+* [DSBridge-HarmonyOS](https://github.com/751496032/DSBridge-HarmonyOS)
+* [DSBridge-Android](https://github.com/wendux/DSBridge-Android)
+* [DSBridge-IOS](https://github.com/wendux/DSBridge-IOS)
 
 
 >由于DSBridge库作者已经停止维护了，Android端建议使用 https://github.com/751496032/DSBridge-Android ，目前本人在维护。
@@ -30,9 +28,13 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 
 ## 安装
 
+安装远程仓库：
+
 ```text
 ohpm install @hzw/ohos-dsbridge
 ```
+
+> 如果是依赖本地文件夹，在切换安装时建议clear下项目，避免启动应用时报错`please check the request path.`，这应该是IDE的bug。
 
 ## 使用
 
@@ -107,10 +109,14 @@ dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
 ```
 npm i m-dsbridge
 // 或者cdn引入
-<script src="https://cdn.jsdelivr.net/npm/m-dsbridge@1.0.0/dsBridge.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/m-dsbridge@1.1.0/dsBridge.js"></script>
 ```
 
-或者直接用原Android或iOS的[DSBridge库](https://github.com/wendux/DSBridge-Android)的JS脚本也行，可能会存在某些API不支持，前面已经有介绍了，但核心功能API是支持的。
+或者直接用原Android或iOS的[DSBridge库](https://github.com/wendux/DSBridge-Android)的JS脚本也行，暂不支持命名空间API。
+
+```typescript
+https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js
+```
 
 2、通过dsBridge对象注册Js函数，供原生调用。
 
@@ -192,6 +198,34 @@ dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
   updateMsg(msg)
 })
 ```
+
+## 监听或拦截Javascript关闭页面
+
+Js调用`close()`函数可以关闭当前页面，原生可以设置监听观察是否拦截。
+
+```typescript
+  aboutToAppear() {
+    this.jsBridge.setClosePageListener(() => {
+      return true; // false 会拦截关闭页面
+    })
+  }
+```
+
+在回调函数中如果返回false，会拦截掉关闭页面的事件。
+
+## 销毁中断
+
+如果异步任务还在执行中，比如`setProgressData`，此时关闭页面返回就会闪退，为了避免这种情形，建议在组件的生命周期函数`aboutToDisappear()`中中断任务。
+
+```typescript
+  aboutToDisappear(){
+    this.jsBridge.destroy()
+  }
+
+```
+
+
+
 
 
 

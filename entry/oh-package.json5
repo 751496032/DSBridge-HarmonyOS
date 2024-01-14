@@ -8,6 +8,6 @@
   "version": "1.0.0",
   "dependencies": {
     "reflect-metadata": "^0.1.13",
-    "library": "file:../libs/library.har"
+    "@hzw/ohos-dsbridge": "file:../libs/library.har"
   }
 }

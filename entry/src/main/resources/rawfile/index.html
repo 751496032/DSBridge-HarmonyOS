@@ -6,8 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
-<!--        <script src="./m-dsBridge.js"></script>-->
-        <script src="https://cdn.jsdelivr.net/npm/m-dsbridge@1.0.0/dsBridge.js"></script>
+        <script src="./dsBridge.js"></script>
+<!--        <script src="https://cdn.jsdelivr.net/npm/m-dsbridge@1.1.0/dsBridge.js"></script>-->
 <!--        <script src="https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js"> </script>-->
     <style type="text/css">
         html, body {
@@ -28,11 +28,13 @@
 
         .call-native {
             margin: 10px;
+           width: calc(100% - 20px);
+           height:50px;
         }
 
         .msg {
             margin: 10px;
-            color: #00ff00
+            color: red
         }
 
 
@@ -42,9 +44,11 @@
 <body>
 <div></div>
 <div class="wrapper">
-
+    <button class="call-native" onclick="callNative1()">检测原生test方法</button>
+    <button class="call-native" onclick="callNative2()">检测原生testSync方法</button>
     <button class="call-native" onclick="callNative3()">调用原生call - testSync同步方法</button>
     <button class="call-native" onclick="callNative4()">调用原生call - testAsync异步方法</button>
+    <button class="call-native" onclick="callNative5()">关闭当前页面</button>
 
     <p class="msg"></p>
 </div>
@@ -60,6 +64,17 @@
         return msg + " H5 show()函数的返回值"
     }
 
+      const callNative1 = () => {
+        let have = dsBridge.hasNativeMethod("test")
+        updateMsg("test方法 " + have)
+    }
+
+
+      const callNative2 = () => {
+       let have = dsBridge.hasNativeMethod("testSync")
+        updateMsg("testSync方法 " + have)
+    }
+
     const callNative3 = () => {
         // 同步
         let msg = dsBridge.call('testSync', JSON.stringify({data: 100}))
@@ -67,12 +82,18 @@
     }
 
     const callNative4 = () => {
-        // 同步
+        // 异步
         dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
             updateMsg(msg)
         })
 
     }
+
+     const callNative5 = () => {
+        //  dsBridge.close()
+        close()
+    }
+
 
     const register1 = () => {
         dsBridge.register('showAlert', function (a, b, c) {
