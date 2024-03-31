@@ -1,11 +1,11 @@
 import "reflect-metadata"
-import { WebViewInterface } from './WebViewInterface'
+import { IWebViewControllerProxy } from './WebViewInterface'
 
 export interface  JavaScriptProxy{
   object: JsInterface,
   name: string,
   methodList: Array<string>,
-  controller: WebViewInterface
+  controller: IWebViewControllerProxy
 }
 
 /**
@@ -38,12 +38,12 @@ export interface CompleteHandler {
    * 只能使用一次
    * @param value
    */
-  complete(value: string | boolean | number)
+  complete(value: Args)
   /**
    * 可以使用多次
    * @param value
    */
-  setProgressData(value: string | boolean | number)
+  setProgressData(value: Args)
 }
 
 export enum MetaData {
@@ -72,6 +72,8 @@ export interface NativeCallInfo {
 export type OnReturnValue = (any) => void
 
 export type OnCloseWindowListener = () => boolean
+
+export type Args = number | string | boolean
 
 
 

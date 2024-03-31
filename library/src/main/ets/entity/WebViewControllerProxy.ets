@@ -1,20 +1,21 @@
-import { JsInterface, OnCloseWindowListener, OnReturnValue } from './Entity2';
-import { IBridge, WebViewInterface } from './WebViewInterface';
+import webview from '@ohos.web.webview';
+import { Args, JsInterface, OnCloseWindowListener, OnReturnValue } from './Entity2';
+import { IBridge, IWebViewControllerProxy, IBaseBridge } from './WebViewInterface';
 
-type P = number | string | boolean
 
-export class WebViewControllerProxy implements WebViewInterface {
+export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWebviewController, IBaseBridge {
   private controller: WebviewController
   private bridge: IBridge
 
-  constructor(controller: WebviewController, bridge: IBridge) {
+  constructor(controller: WebviewController, bridge: IBridge ) {
     this.controller = controller
     this.bridge = bridge
     this.bridge.setWebViewControllerProxy(this)
   }
 
 
-  callJs(method: string, args?: P[], jsReturnValueHandler?: OnReturnValue) {
+
+  callJs(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue) {
     this.bridge.callJs(method, args, jsReturnValueHandler)
   }
 
@@ -23,7 +24,7 @@ export class WebViewControllerProxy implements WebViewInterface {
     return this.bridge.hasJavascriptMethod(method)
   }
 
-  callHandler(method: string, args?: P[], jsReturnValueHandler?: OnReturnValue):void {
+  callHandler(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue):void {
     return this.bridge.callHandler(method, args, jsReturnValueHandler)
   }
 
@@ -61,6 +62,20 @@ export class WebViewControllerProxy implements WebViewInterface {
     }
     return javaScriptProxy
   }
+
+  static createController(bridge: IBridge): WebViewControllerProxy {
+    // @ts-ignore
+    return new WebViewControllerProxy(new webview.WebviewController(), bridge)
+  }
+}
+
+/**
+ * 涉及ohos相关的api
+ */
+export interface IOhosWebviewController {
+  getWebViewController(): WebviewController
+
+  getJavaScriptProxy(): RealJavaScriptProxy
 }
 
 export interface RealJavaScriptProxy {

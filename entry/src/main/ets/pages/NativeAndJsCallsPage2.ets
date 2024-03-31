@@ -7,10 +7,10 @@ import { JsBridge2 } from '../bridge/JsBridge2'
 @Component
 @Entry
 struct NativeAndJsCallsPage2 {
-  private controller: WebViewControllerProxy = new  WebViewControllerProxy(new webView.WebviewController(), new JsBridge2())
+  // private controller: WebViewControllerProxy = new  WebViewControllerProxy(new webView.WebviewController(), new JsBridge2())
+  private controller: WebViewControllerProxy = WebViewControllerProxy.createController(new JsBridge2())
   private url: string = "https://mp.weixin.qq.com/s/kAtQ98mhdbYheo-SIIaFOQ"
   private localPath = $rawfile('index.html')
-  // private jsBridge = new JsBridge2(this.controller)
   @State isLoading: boolean = true
   @State msg: string = ""
 
@@ -20,7 +20,7 @@ struct NativeAndJsCallsPage2 {
     })
   }
 
-  aboutToDisappear(){
+  aboutToDisappear() {
     this.controller.destroy()
   }
 
@@ -66,7 +66,7 @@ struct NativeAndJsCallsPage2 {
           Button("调用js函数-同步")
             .margin({ top: 10 })
             .onClick(() => {
-              this.controller.callJs("showAlert", [1, 2, '666'], (v:string) => {
+              this.controller.callJs("showAlert", [1, 2, '666'], (v: string) => {
                 this.msg = v + ""
               })
             })
@@ -74,7 +74,7 @@ struct NativeAndJsCallsPage2 {
           Button("调用js函数-异步")
             .margin({ top: 10 })
             .onClick(() => {
-              this.controller.callJs("showAlertAsync", [1, 2, '666'], (v:string) => {
+              this.controller.callJs("showAlertAsync", [1, 2, '666'], (v: string) => {
                 this.msg = v + ""
               })
             })

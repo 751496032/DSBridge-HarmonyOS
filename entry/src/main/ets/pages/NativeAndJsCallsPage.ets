@@ -3,6 +3,9 @@ import { LogUtils } from '../utils/LogUtils'
 //import { JsBridge } from '../bridge/JsBridge'
 import { WebViewControllerProxy } from '@hzw/ohos-dsbridge'
 
+/**
+ * @deprecated
+ */
 @Component
 @Entry
 struct NativeAndJsCallsPage {

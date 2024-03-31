@@ -1,4 +1,3 @@
-import webview from '@ohos.web.webview'
 import {
   CallResult,
   MetaData,
@@ -9,16 +8,17 @@ import {
   OnReturnValue,
   CompleteHandler,
   JavaScriptInterface,
-  OnCloseWindowListener
+  OnCloseWindowListener,
+  Args
 } from './Entity2'
 import "reflect-metadata"
 import Prompt from '@system.prompt'
 import { LogUtils } from '../utils/LogUtils2'
 import router from '@ohos.router'
-import { IBridge, WebViewInterface } from './WebViewInterface'
+import { IBridge, IWebViewControllerProxy } from './WebViewInterface'
 
 export class BaseBridge2 implements JsInterface, IBridge {
-  private controller: WebViewInterface
+  private controller: IWebViewControllerProxy
   private name: string = "_dsbridge"
   private isInject: boolean = true
   private callID: number = 0
@@ -26,15 +26,12 @@ export class BaseBridge2 implements JsInterface, IBridge {
   private jsClosePageListener?: OnCloseWindowListener
   private interrupt = false
 
-  constructor() {
-  }
-
-   setWebViewControllerProxy(controller: WebViewInterface){
+   setWebViewControllerProxy(controller: IWebViewControllerProxy){
      this.controller = controller
    }
 
 
-   javaScriptProxy(): JavaScriptProxy {
+  javaScriptProxy(): JavaScriptProxy {
     return <JavaScriptProxy> {
       object: this,
       name: this.name,
@@ -64,7 +61,7 @@ export class BaseBridge2 implements JsInterface, IBridge {
   /**
    *
    * @param methodName 原生方法名
-   * @param params js参数 对应实体类Parameter
+   * @param pexport arams js参数 对应实体类Parameter
    * @returns 如果同步调用，则result#code == 0, 异步返回值result则是没有意义
    */
   call = (methodName: string, params: string): any => {
@@ -73,8 +70,12 @@ export class BaseBridge2 implements JsInterface, IBridge {
     LogUtils.d(this + " " + methodName + " " + params)
     let result: CallResult = { code: -1 }
     // const prototype = Reflect.getPrototypeOf(this);
-    const method = Reflect.get(this,methodName) as Function ;
+    const method = Reflect.get(this,methodName);
 
+    if (typeof method !== 'function') {
+      const err = `call failed: ${methodName} is not a method property`
+      throw new Error(err)
+    }
     let async: boolean = false
     if (method != null && method !== undefined) {
       const decorator = Reflect.getMetadata(MetaData.METHOD_DECORATE, method)
@@ -84,7 +85,7 @@ export class BaseBridge2 implements JsInterface, IBridge {
       }
       async = <boolean> Reflect.getMetadata(MetaData.ASYNC, method)?? false
     } else {
-      Prompt.showToast({ message: `原生${methodName}方法未定义` })
+      Prompt.showToast({ message: `call failed: native not define ${methodName} method` })
     }
 
     if (method != null) {
@@ -94,7 +95,7 @@ export class BaseBridge2 implements JsInterface, IBridge {
       let data: string = (this.isObject(jsParam.data) ? JSON.stringify(jsParam.data) : jsParam.data) as string
       if (async) {
         method.call(this, data, <CompleteHandler> {
-          complete: (value: string | boolean | number) => {
+          complete: (value: Args) => {
             result.code = 0
             result.data = value
             this.callbackToJs(jsParam, result)
@@ -240,7 +241,7 @@ export class BaseBridge2 implements JsInterface, IBridge {
           result.code = 0
         }
       } else {
-        const err = `原生${methodName}方法未定义`
+        const err = `call failed: ${methodName} native method does not exist`
         result.msg = err
       }
     } catch (e) {
