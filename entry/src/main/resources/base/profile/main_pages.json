@@ -1,6 +1,7 @@
 {
   "src": [
     "pages/Index",
-    "pages/NativeAndJsCallsPage"
+    "pages/NativeAndJsCallsPage",
+    "pages/NativeAndJsCallsPage2"
   ]
 }

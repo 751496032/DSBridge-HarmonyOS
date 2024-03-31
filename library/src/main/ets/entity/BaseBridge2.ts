@@ -10,14 +10,15 @@ import {
   CompleteHandler,
   JavaScriptInterface,
   OnCloseWindowListener
-} from './Entity'
+} from './Entity2'
 import "reflect-metadata"
 import Prompt from '@system.prompt'
-import { LogUtils } from '../utils/LogUtils'
+import { LogUtils } from '../utils/LogUtils2'
 import router from '@ohos.router'
+import { IBridge, WebViewInterface } from './WebViewInterface'
 
-export class BaseBridge implements JsInterface {
-  private controller: WebviewController
+export class BaseBridge2 implements JsInterface, IBridge {
+  private controller: WebViewInterface
   private name: string = "_dsbridge"
   private isInject: boolean = true
   private callID: number = 0
@@ -25,12 +26,15 @@ export class BaseBridge implements JsInterface {
   private jsClosePageListener?: OnCloseWindowListener
   private interrupt = false
 
-  constructor(controller: WebviewController) {
-    this.controller = controller
+  constructor() {
   }
 
+   setWebViewControllerProxy(controller: WebViewInterface){
+     this.controller = controller
+   }
 
-  get javaScriptProxy(): JavaScriptProxy {
+
+   javaScriptProxy(): JavaScriptProxy {
     return <JavaScriptProxy> {
       object: this,
       name: this.name,
@@ -63,7 +67,7 @@ export class BaseBridge implements JsInterface {
    * @param params js参数 对应实体类Parameter
    * @returns 如果同步调用，则result#code == 0, 异步返回值result则是没有意义
    */
-   call = (methodName: string, params: string): any => {
+  call = (methodName: string, params: string): any => {
     const m = this.parseNamespace(methodName)
     methodName = m[1]
     LogUtils.d(this + " " + methodName + " " + params)

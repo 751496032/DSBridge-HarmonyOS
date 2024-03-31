@@ -1,9 +1,11 @@
 import "reflect-metadata"
+import { WebViewInterface } from './WebViewInterface'
+
 export interface  JavaScriptProxy{
   object: JsInterface,
   name: string,
   methodList: Array<string>,
-  controller: WebviewController
+  controller: WebViewInterface
 }
 
 /**
@@ -54,7 +56,7 @@ export enum MetaData {
  * @returns
  */
 export function JavaScriptInterface(asyncCall: boolean = true): MethodDecorator {
-  return (target, propertyKey, descriptor: TypedPropertyDescriptor<Object>) => {
+  return (target, propertyKey, descriptor) => {
     Reflect.defineMetadata(MetaData.METHOD_DECORATE, propertyKey, descriptor.value !)
     Reflect.defineMetadata(MetaData.ASYNC, asyncCall, descriptor.value !)
   }
@@ -70,4 +72,6 @@ export interface NativeCallInfo {
 export type OnReturnValue = (any) => void
 
 export type OnCloseWindowListener = () => boolean
+
+
 
