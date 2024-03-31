@@ -1,6 +1,6 @@
 import webView from '@ohos.web.webview'
 import { LogUtils } from '../utils/LogUtils'
-import { JsBridge } from '../bridge/JsBridge'
+
 import { WebViewControllerProxy } from '@hzw/ohos-dsbridge'
 import { JsBridge2 } from '../bridge/JsBridge2'
 
@@ -36,12 +36,12 @@ struct NativeAndJsCallsPage2 {
             return false
           })
           .onProgressChange((event) => {
-            if (event.newProgress == 100) {
+            if (event?.newProgress == 100) {
               this.isLoading = false
             }
           })
           .onConsole((event) => {
-            LogUtils.d('getMessage:' + event.message.getMessage());
+            LogUtils.d('getMessage:' + event?.message.getMessage());
             return false;
           })
           .width('100%')
@@ -66,7 +66,7 @@ struct NativeAndJsCallsPage2 {
           Button("调用js函数-同步")
             .margin({ top: 10 })
             .onClick(() => {
-              this.controller.callJs("showAlert", [1, 2, '666'], (v) => {
+              this.controller.callJs("showAlert", [1, 2, '666'], (v:string) => {
                 this.msg = v + ""
               })
             })
@@ -74,7 +74,7 @@ struct NativeAndJsCallsPage2 {
           Button("调用js函数-异步")
             .margin({ top: 10 })
             .onClick(() => {
-              this.controller.callJs("showAlertAsync", [1, 2, '666'], (v) => {
+              this.controller.callJs("showAlertAsync", [1, 2, '666'], (v:string) => {
                 this.msg = v + ""
               })
             })

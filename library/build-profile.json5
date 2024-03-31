@@ -1,12 +1,11 @@
 {
   "apiType": "stageMode",
   "buildOption": {
-    "artifactType": "original"
+//    "artifactType": "original"
   },
   "targets": [
     {
-      "name": "default",
-      "runtimeOS": "HarmonyOS"
+      "name": "default"
     }
   ]
 }

@@ -1,6 +1,8 @@
 import { JsInterface, OnCloseWindowListener, OnReturnValue } from './Entity2';
 import { IBridge, WebViewInterface } from './WebViewInterface';
 
+type P = number | string | boolean
+
 export class WebViewControllerProxy implements WebViewInterface {
   private controller: WebviewController
   private bridge: IBridge
@@ -12,7 +14,7 @@ export class WebViewControllerProxy implements WebViewInterface {
   }
 
 
-  callJs(method: string, args?: any[], jsReturnValueHandler?: OnReturnValue) {
+  callJs(method: string, args?: P[], jsReturnValueHandler?: OnReturnValue) {
     this.bridge.callJs(method, args, jsReturnValueHandler)
   }
 
@@ -21,7 +23,7 @@ export class WebViewControllerProxy implements WebViewInterface {
     return this.bridge.hasJavascriptMethod(method)
   }
 
-  callHandler(method: string, args?: any[], jsReturnValueHandler?: OnReturnValue) {
+  callHandler(method: string, args?: P[], jsReturnValueHandler?: OnReturnValue):void {
     return this.bridge.callHandler(method, args, jsReturnValueHandler)
   }
 
@@ -51,7 +53,7 @@ export class WebViewControllerProxy implements WebViewInterface {
   }
 
   getJavaScriptProxy(): RealJavaScriptProxy {
-    let javaScriptProxy : RealJavaScriptProxy = {
+    let javaScriptProxy: RealJavaScriptProxy = {
       object: this.bridge.javaScriptProxy().object,
       name: this.bridge.javaScriptProxy().name,
       methodList: this.bridge.javaScriptProxy().methodList,

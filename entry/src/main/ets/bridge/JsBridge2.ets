@@ -4,7 +4,7 @@ import { BaseBridge2 } from '@hzw/ohos-dsbridge';
 import { CompleteHandler, JavaScriptInterface } from '@hzw/ohos-dsbridge';
 
 export class JsBridge2 extends BaseBridge2 {
-  private cHandler: CompleteHandler = null
+  private cHandler?: CompleteHandler
 
   /**
    * 同步模版
@@ -25,7 +25,7 @@ export class JsBridge2 extends BaseBridge2 {
   testAsync(p: string, handler: CompleteHandler) {
     LogUtils.d("testAsync: " + JSON.stringify(p))
     this.cHandler = handler
-    this.countdown(5, (time) => {
+    this.countdown(5, (time:number) => {
       if (time === 0) {
         handler.complete("原生异步testAsync方法返回的数据--结束")
         handler.complete("原生异步testAsync方法返回的数据--结束2") // 不会被回调
@@ -37,7 +37,7 @@ export class JsBridge2 extends BaseBridge2 {
 
   }
 
-  countdown(seconds, callback) {
+  countdown(seconds:number, callback:(S:number)=>void) {
     let count = seconds;
     const interval = setInterval(() => {
       if (count === 0) {
