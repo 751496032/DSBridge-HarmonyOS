@@ -12,11 +12,11 @@ export interface  JavaScriptProxy{
  * 在js中统一用JavaScriptProxy#name来调用原生的call(x,x)方法
  */
 export interface JsInterface {
-/**
- * @param methodName  JS实际调用原生的方法
- * @param params  JS携带过来的参数，有一个callbackID参数
- * @returns
- */
+  /**
+   * @param methodName  JS实际调用原生的方法
+   * @param params  JS携带过来的参数，有一个callbackID参数
+   * @returns
+   */
   call(methodName: string, params: string): any
 }
 

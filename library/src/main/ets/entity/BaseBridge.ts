@@ -10,14 +10,14 @@ import {
   JavaScriptInterface,
   OnCloseWindowListener,
   Args
-} from './Entity2'
+} from './Entity'
 import "reflect-metadata"
 import Prompt from '@system.prompt'
-import { LogUtils } from '../utils/LogUtils2'
+import { LogUtils } from '../utils/LogUtils'
 import router from '@ohos.router'
 import { IBridge, IWebViewControllerProxy } from './WebViewInterface'
 
-export class BaseBridge2 implements JsInterface, IBridge {
+export class BaseBridge implements JsInterface, IBridge {
   private controller: IWebViewControllerProxy
   private name: string = "_dsbridge"
   private isInject: boolean = true
@@ -26,9 +26,9 @@ export class BaseBridge2 implements JsInterface, IBridge {
   private jsClosePageListener?: OnCloseWindowListener
   private interrupt = false
 
-   setWebViewControllerProxy(controller: IWebViewControllerProxy){
-     this.controller = controller
-   }
+  setWebViewControllerProxy(controller: IWebViewControllerProxy){
+    this.controller = controller
+  }
 
 
   javaScriptProxy(): JavaScriptProxy {
@@ -270,9 +270,3 @@ export class BaseBridge2 implements JsInterface, IBridge {
   }
 
 }
-
-
-
-
-
-

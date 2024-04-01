@@ -1,4 +1,4 @@
-import { Args, JavaScriptProxy, OnCloseWindowListener, OnReturnValue } from './Entity2';
+import { Args, JavaScriptProxy, OnCloseWindowListener, OnReturnValue } from './Entity';
 
 /**
  * web组件控制器的api代理接口，这里不能使用ohos的相关属性
