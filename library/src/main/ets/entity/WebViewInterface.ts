@@ -1,7 +1,7 @@
 import { Args, JavaScriptProxy, OnCloseWindowListener, OnReturnValue } from './Entity2';
 
 /**
- * web组件控制器的api代理接口，这里不能使用ohos的相关属性
+ * web组件api的代理接口，不能涉及到ohos的相关属性
  */
 export interface IWebViewControllerProxy {
   runJavaScript(script: string): Promise<string>

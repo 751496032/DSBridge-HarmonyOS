@@ -1,3 +1,4 @@
+// @ts-nocheck
 const bridge = {
     call: function (method, args, callback) {
         let params = {data: args === undefined ? null : args}

@@ -17,7 +17,7 @@ export interface JsInterface {
  * @param params  JS携带过来的参数，有一个callbackID参数
  * @returns
  */
-  call(methodName: string, params: string): any
+  call(methodName: string, params: string): string
 }
 
 

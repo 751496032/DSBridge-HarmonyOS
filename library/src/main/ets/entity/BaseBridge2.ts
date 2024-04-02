@@ -25,6 +25,7 @@ export class BaseBridge2 implements JsInterface, IBridge {
   private handlerMap = new Map<number, OnReturnValue>()
   private jsClosePageListener?: OnCloseWindowListener
   private interrupt = false
+  private javaScriptNamespaceInterfaces = new Map<string,object>()
 
    setWebViewControllerProxy(controller: IWebViewControllerProxy){
      this.controller = controller
@@ -64,11 +65,19 @@ export class BaseBridge2 implements JsInterface, IBridge {
    * @param pexport arams js参数 对应实体类Parameter
    * @returns 如果同步调用，则result#code == 0, 异步返回值result则是没有意义
    */
-  call = (methodName: string, params: string): any => {
+  call = (methodName: string, params: string): string => {
+    const  error = "Js bridge  called, but can't find a corresponded " +
+                    "JavascriptInterface object , please check your code!"
     const m = this.parseNamespace(methodName)
+    const obj = this.javaScriptNamespaceInterfaces.get(m[0])
     methodName = m[1]
     LogUtils.d(this + " " + methodName + " " + params)
     let result: CallResult = { code: -1 }
+    if (obj == null || obj === undefined) {
+      result.errMsg = error
+      LogUtils.e(error)
+      return JSON.stringify(result)
+    }
     // const prototype = Reflect.getPrototypeOf(this);
     const method = Reflect.get(this,methodName);
 
