@@ -1,5 +1,5 @@
 import webview from '@ohos.web.webview';
-import { Args, JsInterface, OnCloseWindowListener, OnReturnValue } from './Entity2';
+import { Args, JsInterface, OnCloseWindowListener, OnReturnValue } from './Entity';
 import { IBridge, IWebViewControllerProxy, IBaseBridge } from './WebViewInterface';
 
 
@@ -64,7 +64,6 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
   }
 
   static createController(bridge: IBridge): WebViewControllerProxy {
-    // @ts-ignore
     return new WebViewControllerProxy(new webview.WebviewController(), bridge)
   }
 }

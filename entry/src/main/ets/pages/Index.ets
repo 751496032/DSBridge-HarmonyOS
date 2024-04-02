@@ -11,13 +11,6 @@ struct Index {
           .onClick(() => {
             router.pushUrl({ url: "pages/NativeAndJsCallsPage" })
           })
-
-        Button('NativeAndJsCalls2')
-          .margin({ top: 20 })
-          .onClick(() => {
-            router.pushUrl({ url: "pages/NativeAndJsCallsPage2" })
-          })
-
       }
       .width('100%')
     }
