@@ -15,9 +15,9 @@ import "reflect-metadata"
 import Prompt from '@system.prompt'
 import { LogUtils } from '../utils/LogUtils'
 import router from '@ohos.router'
-import { IBridge, IWebViewControllerProxy } from './WebViewInterface'
+import { IBaseBridge, IWebViewControllerProxy } from './WebViewInterface'
 
-export class BaseBridge implements JsInterface, IBridge {
+export class BaseBridge implements JsInterface, IBaseBridge {
   private controller: IWebViewControllerProxy
   private name: string = "_dsbridge"
   private isInject: boolean = true
@@ -25,7 +25,7 @@ export class BaseBridge implements JsInterface, IBridge {
   private handlerMap = new Map<number, OnReturnValue>()
   private jsClosePageListener?: OnCloseWindowListener
   private interrupt = false
-  private javaScriptNamespaceInterfaces = new Map<string,object>()
+
 
   setWebViewControllerProxy(controller: IWebViewControllerProxy){
     this.controller = controller
@@ -63,15 +63,15 @@ export class BaseBridge implements JsInterface, IBridge {
    *
    * @param methodName 原生方法名
    * @param pexport arams js参数 对应实体类Parameter
-   * @returns 如果同步调用，则result#code == 0, 异步返回值result则是没有意义
+   * @returns 如果同步调用，则result#code == 0, 异步返回值result值是没有意义的
    */
   call = (methodName: string, params: string): string => {
     const  error = "Js bridge  called, but can't find a corresponded " +
                     "JavascriptInterface object , please check your code!"
     const m = this.parseNamespace(methodName)
-    const obj = this.javaScriptNamespaceInterfaces.get(m[0])
+    const obj = this.controller.javaScriptNamespaceInterfaces.get(m[0])
     methodName = m[1]
-    LogUtils.d(this + " " + methodName + " " + params)
+    LogUtils.d(this + " " + methodName + " " + params  + ' ' + obj)
     let result: CallResult = { code: -1 }
     if (obj == null || obj === undefined) {
       result.errMsg = error
@@ -79,7 +79,7 @@ export class BaseBridge implements JsInterface, IBridge {
       return JSON.stringify(result)
     }
     // const prototype = Reflect.getPrototypeOf(this);
-    const method = Reflect.get(this,methodName);
+    const method = Reflect.get(obj != null && obj != undefined ? obj : this, methodName);
 
     if (typeof method !== 'function') {
       const err = `call failed: ${methodName} is not a method property`
@@ -99,17 +99,18 @@ export class BaseBridge implements JsInterface, IBridge {
 
     if (method != null) {
       let jsParam: Parameter = this.safeParse(params)
+      // todo 待优化
       async = (jsParam._dscbstub != null && jsParam._dscbstub !== undefined) || async
       LogUtils.d("async: " + async + " --- " + methodName)
       let data: string = (this.isObject(jsParam.data) ? JSON.stringify(jsParam.data) : jsParam.data) as string
       if (async) {
-        method.call(this, data, <CompleteHandler> {
+        method.call(obj, data, <CompleteHandler> {
           complete: (value: Args) => {
             result.code = 0
             result.data = value
             this.callbackToJs(jsParam, result)
           },
-          setProgressData: (value: string | boolean | number) => {
+          setProgressData: (value: Args) => {
             result.code = 0
             result.data = value
             this.callbackToJs(jsParam, result, false)
@@ -117,7 +118,7 @@ export class BaseBridge implements JsInterface, IBridge {
 
         })
       } else {
-        const r = method.call(this, data);
+        const r = method.call(obj, data);
         result.code = 0
         result.data = r
         // // js检查原生方法是否存在
@@ -239,25 +240,32 @@ export class BaseBridge implements JsInterface, IBridge {
       } = JSON.parse(param);
       const m = this.parseNamespace(p.name)
       let methodName = m[1]
-      const prototype = Reflect.getPrototypeOf(this);
-      const method = prototype[methodName];
-      if (method != null) {
-        const decorator = Reflect.getMetadata(MetaData.METHOD_DECORATE, method)
-        if (!decorator) {
-          const err = `call failed: please add @JavaScriptInterface decorator in the ${methodName} method`
-          result.msg = err
-        } else {
-          result.code = 0
-        }
-      } else {
-        const err = `call failed: ${methodName} native method does not exist`
+      const obj = this.controller.javaScriptNamespaceInterfaces.get(m[0])
+      const method = Reflect.get(obj != null && obj != undefined ? obj : this, methodName);
+      LogUtils.d(this + " " + methodName + " " + param  + ' ' + obj)
+      if (typeof method !== 'function') {
+        const err = `call failed: ${methodName} is not a method property`
         result.msg = err
+      } else {
+        if (method != null) {
+          const decorator = Reflect.getMetadata(MetaData.METHOD_DECORATE, method)
+          if (!decorator) {
+            const err = `call failed: please add @JavaScriptInterface decorator in the ${methodName} method`
+            result.msg = err
+          } else {
+            result.code = 0
+          }
+        } else {
+          const err = `call failed: ${methodName} native method does not exist`
+          result.msg = err
+        }
       }
+
     } catch (e) {
       result.msg = e
     }
 
-    return result.code ===0
+    return result.code === 0
   }
 
   setClosePageListener(listener: OnCloseWindowListener) {

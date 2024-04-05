@@ -2,17 +2,20 @@ import { LogUtils } from '../utils/LogUtils'
 
 import { WebViewControllerProxy } from '@hzw/ohos-dsbridge'
 import { JsBridge } from '../bridge/JsBridge'
+import { JsBridgeNamespace } from '../bridge/JsBridgeNamespace'
 
 @Component
 @Entry
 struct NativeAndJsCallsPage2 {
-  private controller: WebViewControllerProxy = WebViewControllerProxy.createController(new JsBridge())
+  private controller: WebViewControllerProxy = WebViewControllerProxy.createController()
   private url: string = "https://mp.weixin.qq.com/s/kAtQ98mhdbYheo-SIIaFOQ"
   private localPath = $rawfile('index.html')
   @State isLoading: boolean = true
   @State msg: string = ""
 
   aboutToAppear() {
+    this.controller.addJavascriptObject(new JsBridge())
+    this.controller.addJavascriptObject(new JsBridgeNamespace(), "namespace")
     this.controller.setClosePageListener(() => {
       return true; // false 会拦截关闭页面
     })
@@ -89,6 +92,23 @@ struct NativeAndJsCallsPage2 {
               let has = await this.controller.hasJavascriptMethod("showAlertAy")
               this.msg = `showAlertAy: ${has}`
             })
+
+          Button("命名空间：调用js函数-同步")
+            .margin({ top: 10 })
+            .onClick(async () => {
+              this.controller.callJs("sync.test", [1, 2], (value: string) => {
+                this.msg = value
+              })
+            })
+
+          Button("命名空间：调用js函数-异步")
+            .margin({ top: 10 })
+            .onClick(async () => {
+              this.controller.callJs("asny.test", [3, 2], (value: string) => {
+                this.msg = value
+              })
+            })
+
         }
         .width('100%')
       }

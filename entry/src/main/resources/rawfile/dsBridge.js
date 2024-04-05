@@ -3,6 +3,9 @@ const bridge = {
     call: function (method, args, callback) {
         let params = {data: args === undefined ? null : args}
         if (callback != null && typeof callback == 'function') {
+            if (!window.callID) {
+                window.callID = 0
+            }
             const callName = "dscall" + (window.callID++)
             window[callName] = callback
             params["_dscbstub"] = callName
@@ -18,6 +21,11 @@ const bridge = {
         if (window._dsaf && window._dsf){
             let obj = async ? window._dsaf : window._dsf
             obj[method] = func
+            if (typeof func == "object") {
+                obj._obs[method] = func;
+            } else {
+                obj[method] = func;
+            }
         }
 
     },
@@ -72,7 +80,25 @@ const bridge = {
             } else if (af) {
                 callAsync(af, this._dsaf);
             }else {
-                alert("暂不支持命名空间函数")
+                // namespace
+                let name = info.method.split('.');
+                if (name.length<2) return;
+                let method=name.pop();
+                let namespace=name.join('.')
+                let obs = this._dsf._obs;
+                let ob = obs[namespace] || {};
+                let m = ob[method];
+                if (m && typeof m == "function") {
+                    callSyn(m, ob);
+                    return;
+                }
+                obs = this._dsaf._obs;
+                ob = obs[namespace] || {};
+                m = ob[method];
+                if (m && typeof m == "function") {
+                    callAsync(m, ob);
+                    return;
+                }
             }
         }
     }
@@ -86,9 +112,12 @@ const bridge = {
         const name = method.split('.')
         if (name.length < 2) {
             return !!(_dsf[name] || _dsaf[name])
-        }else {
-            alert("暂不支持命名空间函数检测")
-            return false
+        } else {
+            // namespace
+            let method = name.pop()
+            let namespace = name.join('.')
+            let ob = _dsf._obs[namespace] || _dsaf._obs[namespace]
+            return ob && !!ob[method]
         }
     })
 

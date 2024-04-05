@@ -1,7 +1,7 @@
 import { LogUtils } from '../utils/LogUtils';
 import { CompleteHandler, JavaScriptInterface } from '@hzw/ohos-dsbridge';
 
-export class JsBridge {
+export class JsBridgeNamespace {
   private cHandler?: CompleteHandler
 
   /**
@@ -11,8 +11,8 @@ export class JsBridge {
    */
   @JavaScriptInterface(false)
   testSync(p: string): string {
-    LogUtils.d("testSync: " + JSON.stringify(p))
-    return "原生同步testSync方法返回的数据"
+    LogUtils.d("namespace testSync: " + JSON.stringify(p))
+    return "namespace: 原生同步testSync方法返回的数据"
   }
   /**
    * 异步模版
@@ -21,14 +21,14 @@ export class JsBridge {
    */
   @JavaScriptInterface()
   testAsync(p: string, handler: CompleteHandler) {
-    LogUtils.d("testAsync: " + JSON.stringify(p))
+    LogUtils.d("namespace testAsync: " + JSON.stringify(p))
     this.cHandler = handler
     this.countdown(5, (time:number) => {
       if (time === 0) {
-        handler.complete("原生异步testAsync方法返回的数据--结束")
-        handler.complete("原生异步testAsync方法返回的数据--结束2") // 不会被调用 会报错 Uncaught ReferenceError: xxx is not defined
+        handler.complete("namespace: 原生异步testAsync方法返回的数据--结束")
+        handler.complete("namespace: 原生异步testAsync方法返回的数据--结束2") // 不会被调用 会报错 Uncaught ReferenceError: xxx is not defined
       } else {
-        handler.setProgressData("原生异步testAsync方法返回的数据--" + time)
+        handler.setProgressData("namespace: 原生异步testAsync方法返回的数据--" + time)
       }
     })
 

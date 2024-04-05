@@ -4,6 +4,9 @@ import { Args, JavaScriptProxy, OnCloseWindowListener, OnReturnValue } from './E
  * web组件api的代理接口，不能涉及到ohos的相关属性
  */
 export interface IWebViewControllerProxy {
+
+  readonly javaScriptNamespaceInterfaces: Map<string, object>
+
   runJavaScript(script: string): Promise<string>
 
   /**
@@ -18,13 +21,12 @@ export interface IWebViewControllerProxy {
 
 }
 
-export interface IAttachProxy {
-  setWebViewControllerProxy(controller: IWebViewControllerProxy)
+// export interface IAttachProxy {
+//   setWebViewControllerProxy(controller: IWebViewControllerProxy)
+//   javaScriptProxy(): JavaScriptProxy
+// }
 
-  javaScriptProxy(): JavaScriptProxy
-}
-
-export interface IBaseBridge {
+export interface IBaseBridge  {
   destroy(): void;
 
   callJs(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue): void
@@ -36,5 +38,4 @@ export interface IBaseBridge {
   callHandler(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue): void
 }
 
-export interface IBridge extends IAttachProxy, IBaseBridge {}
 

@@ -6,8 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
-        <script src="./dsBridge.js"></script>
-<!--        <script src="https://cdn.jsdelivr.net/npm/m-dsbridge@1.1.0/dsBridge.js"></script>-->
+<!--        <script src="./dsBridge.js" ></script>-->
+        <script src="https://cdn.jsdelivr.net/npm/m-dsbridge/dsBridge.js"></script>
 <!--        <script src="https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js"> </script>-->
     <style type="text/css">
         html, body {
@@ -49,6 +49,8 @@
     <button class="call-native" onclick="callNative3()">调用原生call - testSync同步方法</button>
     <button class="call-native" onclick="callNative4()">调用原生call - testAsync异步方法</button>
     <button class="call-native" onclick="callNative5()">关闭当前页面</button>
+    <button class="call-native" onclick="callNative6()">命名空间call - testSync同步方法</button>
+    <button class="call-native" onclick="callNative7()">命名空间call - testAsync同步方法</button>
 
     <p class="msg"></p>
 </div>
@@ -94,6 +96,18 @@
         close()
     }
 
+    const callNative6 = () => {
+        let msg =  dsBridge.call('namespace.testSync',{msg:'来自js命名空间的数据'})
+        updateMsg(msg)
+    }
+
+      const callNative7 = () => {
+          dsBridge.call('namespace.testAsync', 'test', (msg) => {
+            updateMsg(msg)
+        })
+    }
+
+
 
     const register1 = () => {
         dsBridge.register('showAlert', function (a, b, c) {
@@ -123,8 +137,25 @@
     }
 
 
+    const register3 = () => {
+        // namespace
+        dsBridge.register('sync', {
+            test: function (a, b) {
+                return "namespace:  " + (a + b)
+            }
+        })
+
+        dsBridge.registerAsyn("asny",{
+            test: function (a,b ,callback) {
+                callback("namespace:  " + (a + b))
+            }
+        })
+    }
+
+
     register1()
     register2()
+    register3()
 
 
     function updateMsg(msg) {
