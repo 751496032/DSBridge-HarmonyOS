@@ -14,16 +14,12 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
     this.bridge.setWebViewControllerProxy(this)
     this.addJavascriptObject(this.bridge, "_dsb")
     if (obj != null) {
-      this.addJavascriptObject(obj, null)
+      this.addJavascriptObject(obj)
     }
   }
 
 
-
-  addJavascriptObject = (obj: object, namespace?: string) => {
-    if (namespace == null || namespace == undefined) {
-      namespace = ''
-    }
+  addJavascriptObject = (obj: object, namespace: string = '') => {
     if (obj != null) {
       this.javaScriptNamespaceInterfaces.set(namespace, obj)
     }
