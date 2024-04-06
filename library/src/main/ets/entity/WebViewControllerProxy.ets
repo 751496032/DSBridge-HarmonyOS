@@ -50,6 +50,7 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
 
 
   destroy() {
+    this.javaScriptNamespaceInterfaces.clear()
     this.bridge.destroy()
   }
 
