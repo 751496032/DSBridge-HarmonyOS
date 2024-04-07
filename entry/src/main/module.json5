@@ -5,13 +5,13 @@
     "description": "$string:module_desc",
     "mainElement": "EntryAbility",
     "deviceTypes": [
-      "phone"
+      "default"
     ],
     "deliveryWithInstall": true,
     "installationFree": false,
     "pages": "$profile:main_pages",
     "requestPermissions": [{
-      "name": "ohos.permission.INTERNET",
+      "name": "ohos.permission.INTERNET"
     }],
     "abilities": [
       {

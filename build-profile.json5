@@ -1,19 +1,6 @@
 {
   "app": {
     "signingConfigs": [
-      //      {
-      //        "name": "default",
-      //        "type": "HarmonyOS",
-      //        "material": {
-      //          "certpath": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.cer",
-      //          "storePassword": "0000001B1C1534C7E1ABCEBA1CD52558F7E7779255409A648491F2D87B76D9A24466026C40941730300685",
-      //          "keyAlias": "debugKey",
-      //          "keyPassword": "0000001B4F1F3B61AB4D995FF1EE597FF674AC21FEDF291E39CD446C317255684ECD4EEEA1B449BFA1336E",
-      //          "profile": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.p7b",
-      //          "signAlg": "SHA256withECDSA",
-      //          "storeFile": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.p12"
-      //        }
-      //      },
 //      {
 //        "name": "dev",
 //        "type": "HarmonyOS",
@@ -28,13 +15,20 @@
 //        }
 //      }
     ],
+    "compileSdkVersion": 9,
+    "compatibleSdkVersion": 9,
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
-        "compileSdkVersion": "4.1.0(11)",
-        "compatibleSdkVersion": "4.1.0(11)",
-        "runtimeOS": "HarmonyOS",
+//        "compileSdkVersion": "4.1.0(11)",
+//        "compatibleSdkVersion": "4.1.0(11)",
+//        "runtimeOS": "HarmonyOS",
+
+//        "compileSdkVersion": "3.1.0(9)",    //指定OpenHarmony应用/服务编译时的版本
+//        "compatibleSdkVersion": "3.1.0(9)", //指定OpenHarmony应用/服务兼容的最低版本。
+//        "runtimeOS": "HarmonyOS",          //指定为HarmonyOS/OpenHarmony
+
       }
     ]
   },

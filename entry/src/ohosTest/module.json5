@@ -5,7 +5,7 @@
     "description": "$string:module_test_desc",
     "mainElement": "TestAbility",
     "deviceTypes": [
-      "phone"
+      "default"
     ],
     "deliveryWithInstall": true,
     "installationFree": false,
