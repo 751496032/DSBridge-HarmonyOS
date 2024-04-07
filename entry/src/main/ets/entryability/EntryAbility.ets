@@ -1,12 +1,17 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
-import { AbilityConstant, Want } from '@kit.AbilityKit';
+// import { AbilityConstant, Want } from '@kit.AbilityKit';
 
 export default class EntryAbility extends UIAbility {
-  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {
+  // onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {
+  //   hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+  // }
+
+  onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
+
 
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
