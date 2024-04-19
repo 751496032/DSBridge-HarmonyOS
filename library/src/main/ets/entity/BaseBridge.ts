@@ -16,6 +16,7 @@ import Prompt from '@system.prompt'
 import { LogUtils } from '../utils/LogUtils'
 import router from '@ohos.router'
 import { IBaseBridge, IWebViewControllerProxy } from './WebViewInterface'
+import { ToastUtils } from '../utils/ToastUtils'
 
 export class BaseBridge implements JsInterface, IBaseBridge {
   private controller: IWebViewControllerProxy
@@ -68,33 +69,35 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   call = (methodName: string, params: string): string => {
     const  error = "Js bridge  called, but can't find a corresponded " +
                     "JavascriptInterface object , please check your code!"
+    let result: CallResult = { code: -1 }
+    if (!methodName) {
+      return this.handlerError(result, error)
+    }
     const m = this.parseNamespace(methodName)
     const obj = this.controller.javaScriptNamespaceInterfaces.get(m[0])
     methodName = m[1]
     LogUtils.d(this + " " + methodName + " " + params  + ' ' + obj)
-    let result: CallResult = { code: -1 }
     if (obj == null || obj === undefined) {
-      result.errMsg = error
-      LogUtils.e(error)
-      return JSON.stringify(result)
+      return this.handlerError(result, error)
     }
     // const prototype = Reflect.getPrototypeOf(this);
     const method = Reflect.get(obj != null && obj != undefined ? obj : this, methodName);
 
     if (typeof method !== 'function') {
-      const err = `call failed: ${methodName} is not a method property`
-      throw new Error(err)
+      const err = `call failed: ${methodName} is not a method attribute or is not defined`
+      return this.handlerError(result, err)
     }
     let async: boolean = false
     if (method != null && method !== undefined) {
       const decorator = Reflect.getMetadata(MetaData.METHOD_DECORATE, method)
       if (!decorator) {
         const err = `call failed: please add @JavaScriptInterface decorator in the ${methodName} method`
-        throw new Error(err)
+        return this.handlerError(result, err)
       }
       async = <boolean> Reflect.getMetadata(MetaData.ASYNC, method)?? false
     } else {
-      Prompt.showToast({ message: `call failed: native not define ${methodName} method` })
+      const err = `call failed: native undefined ${methodName} method`
+      return this.handlerError(result, err)
     }
 
     if (method != null) {
@@ -128,11 +131,19 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       }
 
     } else {
-      const err = `call failed: ${methodName} native method does not exist`
+      const err = `call failed: native undefined ${methodName} method`
       result.errMsg = err
     }
     return JSON.stringify(result)
 
+  }
+
+
+  private handlerError(result: CallResult, err: string) {
+    result.errMsg = err
+    LogUtils.e(err)
+    ToastUtils.show(err)
+    return JSON.stringify(result)
   }
 
   private parseNamespace(method: string): string[] {
@@ -244,7 +255,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       const method = Reflect.get(obj != null && obj != undefined ? obj : this, methodName);
       LogUtils.d(this + " " + methodName + " " + param  + ' ' + obj)
       if (typeof method !== 'function') {
-        const err = `call failed: ${methodName} is not a method property`
+        const err = `call failed: ${methodName} is not a method attribute or is not defined`
         result.msg = err
       } else {
         if (method != null) {

@@ -27,9 +27,9 @@
         }
 
         .call-native {
-            margin: 10px;
-           width: calc(100% - 20px);
-           height:50px;
+            margin: 6px;
+           width: calc(100% - 12px);
+           height:40px;
         }
 
         .msg {
@@ -51,6 +51,7 @@
     <button class="call-native" onclick="callNative5()">关闭当前页面</button>
     <button class="call-native" onclick="callNative6()">命名空间call - testSync同步方法</button>
     <button class="call-native" onclick="callNative7()">命名空间call - testAsync同步方法</button>
+    <button class="call-native" onclick="callNative8()">调用原生未定义的showToast方法</button>
 
     <p class="msg"></p>
 </div>
@@ -101,12 +102,17 @@
         updateMsg(msg)
     }
 
-      const callNative7 = () => {
+    const callNative7 = () => {
           dsBridge.call('namespace.testAsync', 'test', (msg) => {
             updateMsg(msg)
         })
     }
 
+     const callNative8 = () => {
+            dsBridge.call('showToast', 'msg from h5')
+         // let data = dsBridge.call(null,'msg')
+         // updateMsg(data)
+    }
 
 
     const register1 = () => {

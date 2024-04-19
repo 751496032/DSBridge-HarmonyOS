@@ -14,19 +14,19 @@
       //          "storeFile": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.p12"
       //        }
       //      },
-//      {
-//        "name": "dev",
-//        "type": "HarmonyOS",
-//        "material": {
-//          "storePassword": "0000001AD3E70B3390747316F31068ACB366520BEB3A38C0CC40BD3598C13D48CBD879A87CEE8C033F80",
-//          "certpath": "./config/dsbridge.cer",
-//          "keyAlias": "dsbridge",
-//          "keyPassword": "0000001ADDD7BEAA0C1757391F0D72EAEFF37965BA2DFC12054DF5FDCFB17325D3559FA70B5E3C8FA801",
-//          "profile": "./config/dsbridgeDebug.p7b",
-//          "signAlg": "SHA256withECDSA",
-//          "storeFile": "./config/dsbridge.p12"
-//        }
-//      }
+      //      {
+      //        "name": "dev",
+      //        "type": "HarmonyOS",
+      //        "material": {
+      //          "storePassword": "0000001AD3E70B3390747316F31068ACB366520BEB3A38C0CC40BD3598C13D48CBD879A87CEE8C033F80",
+      //          "certpath": "./config/dsbridge.cer",
+      //          "keyAlias": "dsbridge",
+      //          "keyPassword": "0000001ADDD7BEAA0C1757391F0D72EAEFF37965BA2DFC12054DF5FDCFB17325D3559FA70B5E3C8FA801",
+      //          "profile": "./config/dsbridgeDebug.p7b",
+      //          "signAlg": "SHA256withECDSA",
+      //          "storeFile": "./config/dsbridge.p12"
+      //        }
+      //      }
     ],
     "products": [
       {
