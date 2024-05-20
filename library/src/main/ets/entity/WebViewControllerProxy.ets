@@ -5,11 +5,11 @@ import { IWebViewControllerProxy, IBaseBridge } from './WebViewInterface';
 
 
 export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWebviewController, IBaseBridge {
-  private controller: WebviewController
+  private controller: webview.WebviewController
   private bridge: BaseBridge = new BaseBridge()
   javaScriptNamespaceInterfaces: Map<string, object> = new Map();
 
-  constructor(controller: WebviewController, obj?: object) {
+  constructor(controller: webview.WebviewController, obj?: object) {
     this.controller = controller
     this.bridge.setWebViewControllerProxy(this)
     this.addJavascriptObject(this.bridge, "_dsb")
@@ -40,6 +40,15 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
 
   }
 
+  callJsMethodWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue): void {
+    this.bridge.callJsMethodWithoutParam(method, jsReturnValueHandler)
+  }
+
+  callHandlerWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue): void {
+    this.bridge.callHandlerWithoutParam(method, jsReturnValueHandler)
+  }
+
+
   setClosePageListener(listener: OnCloseWindowListener) {
     this.bridge.setClosePageListener(listener)
   }
@@ -62,10 +71,14 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
     this.controller.refresh()
   }
 
-  getWebViewController(): WebviewController {
+  getWebViewController(): webview.WebviewController {
     return this.controller
   }
 
+  /**
+   * @deprecated
+   * @returns
+   */
   getJavaScriptProxy(): RealJavaScriptProxy {
     let javaScriptProxy: RealJavaScriptProxy = {
       object: this.bridge.javaScriptProxy().object,
@@ -76,23 +89,39 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
     return javaScriptProxy
   }
 
+  get javaScriptProxy(): RealJavaScriptProxy {
+    return {
+      object: this.bridge.javaScriptProxy().object,
+      name: this.bridge.javaScriptProxy().name,
+      methodList: this.bridge.javaScriptProxy().methodList,
+      controller: this.controller
+    }
+  }
+
+
   static createController(obj?: object): WebViewControllerProxy {
     return new WebViewControllerProxy(new webview.WebviewController(), obj)
   }
 }
 
 /**
- * 涉及ohos相关的api
+ * ohos相关的api
  */
 export interface IOhosWebviewController {
-  getWebViewController(): WebviewController
+  getWebViewController(): webview.WebviewController
 
+  /**
+   * @deprecated
+   * @returns
+   */
   getJavaScriptProxy(): RealJavaScriptProxy
+
+  get javaScriptProxy(): RealJavaScriptProxy
 }
 
 export interface RealJavaScriptProxy {
   object: JsInterface,
   name: string,
   methodList: Array<string>,
-  controller: WebviewController
+  controller: webview.WebviewController
 }

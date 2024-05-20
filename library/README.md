@@ -1,13 +1,14 @@
 
 ## 介绍
 
-HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成交互，相互调用彼此的功能。
+HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成交互，可以相互调用彼此的功能。
 
 目前兼容Android、iOS第三方DSBridge库的核心功能，基本保持原来的使用方式，后续会持续迭代保持与Android库相同的功能，减少前端和客户端的适配工作。
 
 特性：
 
 - **已适配鸿蒙NEXT版本；**
+- **支持原生同步方法内使用Promise和async/await执行异步，即在同步方法内执行依次异步任务**；
 - 支持以类的方式集中统一管理API；
 - 支持同步和异步调用；
 - 支持进度回调/回传：一次调用，多次返回；
@@ -34,7 +35,11 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 ohpm install @hzw/ohos-dsbridge
 ```
 
-> 如果是依赖本地文件夹，在切换安装时建议clear下项目，避免启动应用时报错`please check the request path.`，这应该是IDE的bug。
+或者安装本地har包
+
+```text
+ohpm install ../libs/library.har
+```
 
 ## 使用
 
@@ -70,9 +75,9 @@ export class JsBridge{
 }
 ```
 
-其中方法的形参`CompleteHandler`，可用于异步回调。
+**原生同步方法不能用async声明，返回值不能是Promise对象，如果需要在同步方法内执行异步任务，可以使用sleep函数来加持完成，下面会有介绍**；异步方法的形参`CompleteHandler`，可用于结果回调。
 
-2、在原生Web组件初始化时，通过`WebViewControllerProxy`类来获取`WebviewController`实例和JS注入实例，然后将其设置到Web组件中，接着将API管理类(JsBridge)注入到`WebViewControllerProxy`中。
+2、在原生Web组件初始化时，通过`WebViewControllerProxy`类来获取`WebviewController`实例来实现JS注入，然后将其关联到Web组件中，接着将API管理类(JsBridge)关联到`WebViewControllerProxy`中。
 
 ```typescript
 private controller: WebViewControllerProxy = WebViewControllerProxy.createController()
@@ -295,6 +300,30 @@ this.controller.callJs("asny.test", [3, 2], (value: string) => {
   this.msg = value
 })
 ```
+
+## 原生同步方法内执行异步任务
+
+原生同步方法：
+
+```typescript
+  /**
+   * 同步模版
+   * @param p
+   * @returns
+   */
+  @JavaScriptInterface(false)
+  testSync(p: string): string {
+    LogUtils.d("testSync: " + JSON.stringify(p))
+    return "原生同步testSync方法返回的数据"
+  }
+```
+
+如果要在同步方法内执行异步任务，并将异步结果return返回给h5，上面的显然是无法实现的；在鸿蒙中单次I/O任务基本是Promise和async/await来完成的，比如数据持久化（首选项Preferences），获取数据就是异步过程，
+如何将异步数据返回给h5，这里设计一个`sleep`函数来协助完成。
+
+> `sleep`函数内部主要是由TaskTool来实现的，会阻塞主线程等待异步的结果，阻塞主线程最长不会超过3s，也就是异步任务只支持3s的耗时，当超过3s无论
+
+
 
 ## 最后
 

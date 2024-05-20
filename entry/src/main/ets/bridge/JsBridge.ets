@@ -1,5 +1,30 @@
 import { LogUtils } from '../utils/LogUtils';
-import { CompleteHandler, JavaScriptInterface } from '@hzw/ohos-dsbridge';
+import { BaseSendable, CompleteHandler, JavaScriptInterface, sleep } from '@hzw/ohos-dsbridge';
+
+@Sendable
+export class Param  extends BaseSendable{
+  private a : number = 0
+  private b : number = 0
+  public sum: number = 0
+
+  constructor(a: number, b: number) {
+    super();
+    this.a = a;
+    this.b = b;
+  }
+
+  async run(): Promise<void> {
+    this.sum =  await this.add()
+    let currentTime = Date.now()
+    while (Date.now() - currentTime < 5000) {
+
+    }
+  }
+
+  async add(){
+    return this.a + this.b
+  }
+}
 
 export class JsBridge {
   private cHandler?: CompleteHandler
@@ -14,6 +39,22 @@ export class JsBridge {
     LogUtils.d("testSync: " + JSON.stringify(p))
     return "原生同步testSync方法返回的数据"
   }
+
+  /**
+   * 同步方法中使用Promise
+   * @param args
+   * @returns
+   */
+  @JavaScriptInterface(false)
+  testSleep(args: string): number {
+    let p = new Param(100, 200)
+    let p1 = new Param(100, 300)
+    sleep(p)
+    sleep(p1)
+    LogUtils.d(`testSleep sum: ${p.sum}  ${p1.sum}`)
+    return p.sum + p1.sum
+  }
+
   /**
    * 异步模版
    * @param p

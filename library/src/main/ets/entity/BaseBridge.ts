@@ -81,7 +81,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       return this.handlerError(result, error)
     }
     // const prototype = Reflect.getPrototypeOf(this);
-    const method = Reflect.get(obj != null && obj != undefined ? obj : this, methodName);
+    const method = Reflect.get(obj != undefined && obj != null  ? obj : this, methodName);
 
     if (typeof method !== 'function') {
       const err = `call failed: ${methodName} is not a method attribute or is not defined`
@@ -124,10 +124,6 @@ export class BaseBridge implements JsInterface, IBaseBridge {
         const r = method.call(obj, data);
         result.code = 0
         result.data = r
-        // // js检查原生方法是否存在
-        // if (methodName.includes("hasNativeMethod")) {
-        //   return r.code === 0
-        // }
       }
 
     } else {
@@ -203,6 +199,10 @@ export class BaseBridge implements JsInterface, IBaseBridge {
 
   callHandler(method: string, args?: any[], jsReturnValueHandler?: OnReturnValue) {
     this.callJs(method, args, jsReturnValueHandler)
+  }
+
+  callHandlerWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue) {
+    this.callJs(method, [], jsReturnValueHandler)
   }
 
   hasJavascriptMethod(method: string): Promise<boolean> {

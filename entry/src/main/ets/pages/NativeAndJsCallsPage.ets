@@ -31,7 +31,7 @@ struct NativeAndJsCallsPage2 {
       Stack() {
         Web({ src: this.localPath, controller: this.controller.getWebViewController() })
           .javaScriptAccess(true)
-          .javaScriptProxy(this.controller.getJavaScriptProxy())
+          .javaScriptProxy(this.controller.javaScriptProxy)
           .onAlert((event) => {
             // AlertDialog.show({ message: event.message })
             return false

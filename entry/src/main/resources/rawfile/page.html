@@ -51,6 +51,7 @@
 </head>
 <body>
 <div class="msg-wrapper">
+    <p>新页面</p>
     <p class="msg"></p>
 </div>
 <div class="wrapper">
@@ -62,8 +63,10 @@
     <button class="call-native" onclick="callNative6()">命名空间call - testSync()同步方法</button>
     <button class="call-native" onclick="callNative7()">命名空间call - testAsync()同步方法</button>
     <button class="call-native" onclick="callNative8()">调用原生未定义的showToast()方法</button>
-    <button class="call-native" onclick="callNative9()">打开新页面</button>
-    <button class="call-native" onclick="callNative10()">调用原生同步testSleep()方法  Promise同步等待返回结果</button>
+    <button class="call-native" onclick="callNative9()">h5 调用history.back()返回</button>
+<!--    <div>-->
+<!--        <a href="https://www.baidu.com">百度</a>-->
+<!--    </div>-->
 </div>
 </body>
 <script>
@@ -125,14 +128,8 @@
     }
 
     const callNative9 = () => {
-        window.open("page.html", "_blank");
+        history.back()
     }
-
-    const callNative10 = () => {
-         let msg = dsBridge.call('testSleep', JSON.stringify({data: 100}))
-        updateMsg(msg)
-    }
-
 
 
     const register1 = () => {

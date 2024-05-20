@@ -23,7 +23,7 @@ export interface JsInterface {
 
 export interface CallResult {
   code: number,
-  data?: string | boolean | number,
+  data?: Args,
   errMsg?: string,
   async?: boolean,
 }
@@ -73,7 +73,7 @@ export type OnReturnValue = (any) => void
 
 export type OnCloseWindowListener = () => boolean
 
-export type Args = number | string | boolean
+export type Args = number | string | boolean | Object
 
 
 

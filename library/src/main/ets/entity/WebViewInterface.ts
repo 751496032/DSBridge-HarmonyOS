@@ -31,11 +31,15 @@ export interface IBaseBridge  {
 
   callJs(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue): void
 
+  callJsMethodWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue): void
+
   setClosePageListener(listener: OnCloseWindowListener): void
 
   hasJavascriptMethod(method: string): Promise<boolean>
 
   callHandler(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue): void
+
+  callHandlerWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue): void
 }
 
 

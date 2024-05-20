@@ -9,5 +9,6 @@
   "dependencies": {
     "reflect-metadata": "^0.1.13",
     "@hzw/ohos-dsbridge": "file:../library"
-  }
+  },
+  "dynamicDependencies": {}
 }

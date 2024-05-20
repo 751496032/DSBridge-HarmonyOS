@@ -7,3 +7,7 @@ export { IWebViewControllerProxy as WebViewInterface } from './src/main/ets/enti
 export { WebViewControllerProxy } from './src/main/ets/entity/WebViewControllerProxy'
 
 export * from "./src/main/ets/entity/Entity"
+
+export { BaseSendable } from './src/main/ets/sleep/BaseSendable'
+
+export { sleep } from './src/main/ets/sleep/Sleep'
