@@ -1,5 +1,5 @@
 import { LogUtils } from '../utils/LogUtils';
-import { BaseSendable, CompleteHandler, JavaScriptInterface, sleep } from '@hzw/ohos-dsbridge';
+import { BaseSendable, CompleteHandler, JavaScriptInterface, taskWait } from '@hzw/ohos-dsbridge';
 
 @Sendable
 export class Param  extends BaseSendable{
@@ -52,13 +52,13 @@ export class JsBridge {
    * @returns
    */
   @JavaScriptInterface(false)
-  testSleep(args: string): number {
+  testTaskWait(args: string): number {
     let p = new Param(100, 200)
     let p1 = new Param(100, 300)
-    sleep(p)
+    taskWait(p)
     p1.tag = "Param"
-    sleep(p1)
-    LogUtils.d(`testSleep sum: ${p.sum}  ${p1.sum}`)
+    taskWait(p1)
+    LogUtils.d(`testTaskWait sum: ${p.sum}  ${p1.sum}`)
     return p.sum + p1.sum
   }
 

@@ -8,6 +8,6 @@ export { WebViewControllerProxy } from './src/main/ets/entity/WebViewControllerP
 
 export * from "./src/main/ets/entity/Entity"
 
-export { BaseSendable } from './src/main/ets/sleep/BaseSendable'
+export { BaseSendable } from './src/main/ets/wait/BaseSendable'
 
-export { sleep } from './src/main/ets/sleep/Sleep'
+export { taskWait } from './src/main/ets/wait/TaskWait'
