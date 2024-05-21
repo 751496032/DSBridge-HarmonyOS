@@ -47,7 +47,7 @@ export class JsBridge {
   }
 
   /**
-   * 同步方法中使用Promise
+   * 同步方法中执行异步并发任务
    * @param args
    * @returns
    */

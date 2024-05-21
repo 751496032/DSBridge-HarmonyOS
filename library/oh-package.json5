@@ -14,7 +14,7 @@
   "description": "HarmonyOS native and JS interaction, calling each other\u0027s functions",
   "main": "index.ets",
   "repository": "https://github.com/751496032/DSBridge-HarmonyOS.git",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "dependencies": {
     "reflect-metadata": "^0.1.13"
   }
