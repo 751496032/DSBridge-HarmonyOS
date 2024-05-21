@@ -4,12 +4,15 @@
  */
 @Sendable
 export class BaseSendable {
-  key: string = `key_${Date.now()}`
+  public enableLog: boolean = false
+  public key: string = `key_${Date.now()}`
+  public tag: string = "BaseSendable"
   private _isCompleted: boolean = false
 
   public get isCompleted(): boolean {
     return this._isCompleted
   }
+
 
   /**
    * 不能手动调用complete()、run()方法

@@ -6,33 +6,48 @@ import { taskpool } from '@kit.ArkTS'
 
 @Concurrent
 async function run(sendable: BaseSendable) {
-  // LogUtils.d(`task start: ${Date.now()}`)
+  const currentTime = Date.now()
   await sendable.run()
   await sendable.complete()
-  // LogUtils.d(`task end: ${Date.now()}  ${sendable.isCompleted}`)
+  if (sendable.enableLog) {
+    LogUtils.d(`${sendable.tag} task time: ${Date.now() - currentTime}`)
+  }
+
 }
 
 /**
- * 不建议做耗时过长的任务，当任务超过3s，无论是否执行完毕都会结束，数据会丢失
+ * 不建议做耗时过长的任务，当任务超过3s，无论是否执行完毕都会结束，数据可能会丢失
  * 为何是3s呢，当主线程阻塞超过3s时，系统会发生anr无响应异常，闪退。
  * @param args
  * @returns
  */
 export function sleep<T extends BaseSendable>(args: BaseSendable) : T{
   const task: taskpool.Task = new taskpool.Task(run, args)
-  task.name = args.key
   taskpool.execute(task)
   let currentTime = Date.now()
-  while (Date.now() - currentTime < 3000) {
-    if (args.isCompleted) {
+  while (true) {
+    if (Date.now() - currentTime < 3000){
+      if (args.isCompleted) {
+        break
+      }
+    }else {
       break
     }
   }
-
-  if (taskpool.getTaskPoolInfo()?.taskInfos[0]?.state === taskpool.State.WAITING) {
-    LogUtils.d(`task cacenl `)
-    taskpool.cancel(task)
+  if (!args.isCompleted){
+    taskpool.getTaskPoolInfo().taskInfos.forEach((v)=>{
+      if (args.enableLog) {
+        LogUtils.d(`${args.tag} task info: ${JSON.stringify(v)}`)
+      }
+      try {
+        taskpool.cancel(task)
+      } catch (e) {
+        LogUtils.e(JSON.stringify(e))
+      }
+    })
   }
-  LogUtils.d(`task result: ${args.isCompleted}  ${args.key}`)
+  if (args.enableLog) {
+    LogUtils.d(`${args.tag} task result: ${JSON.stringify(args)} time: ${Date.now() - currentTime}`)
+  }
   return args as T
 }

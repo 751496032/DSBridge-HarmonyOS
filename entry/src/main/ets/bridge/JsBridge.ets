@@ -6,6 +6,7 @@ export class Param  extends BaseSendable{
   private a : number = 0
   private b : number = 0
   public sum: number = 0
+  public enableLog: boolean = true
 
   constructor(a: number, b: number) {
     super();
@@ -14,16 +15,21 @@ export class Param  extends BaseSendable{
   }
 
   async run(): Promise<void> {
+    // let currentTime = Date.now()
+    // while (true) {
+    //   if (Date.now() - currentTime > 5000) {
+    //       break
+    //   }
+    // }
+    // throw new Error("ddd")
     this.sum =  await this.add()
-    let currentTime = Date.now()
-    while (Date.now() - currentTime < 5000) {
-
-    }
   }
 
   async add(){
     return this.a + this.b
   }
+
+
 }
 
 export class JsBridge {
@@ -50,6 +56,7 @@ export class JsBridge {
     let p = new Param(100, 200)
     let p1 = new Param(100, 300)
     sleep(p)
+    p1.tag = "Param"
     sleep(p1)
     LogUtils.d(`testSleep sum: ${p.sum}  ${p1.sum}`)
     return p.sum + p1.sum

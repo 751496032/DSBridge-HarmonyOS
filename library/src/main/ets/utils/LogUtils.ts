@@ -8,18 +8,27 @@ export class LogUtils {
     this.enable = enabled
   }
 
-  static d(msg: any) {
+  static dTag(tag: string, msg: any) {
     if (!this.enable) {
       return
     }
-    hilog.debug(0x0001, LogUtils.LOG_TAG, msg)
+    hilog.debug(0x0001, tag, msg)
+  }
+
+
+  static d(msg: any) {
+    this.dTag(this.LOG_TAG, msg)
+  }
+
+  static eTag(tag: string, msg: any) {
+    if (!this.enable) {
+      return
+    }
+    hilog.error(0x0001, tag, msg)
   }
 
   static e(msg: any) {
-    if (!this.enable) {
-      return
-    }
-    hilog.error(0x0001, LogUtils.LOG_TAG, msg)
+    this.eTag(this.LOG_TAG, msg)
   }
 }
 
