@@ -247,7 +247,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
     try {
       const p: {
         name: string,
-        type
+        type: 'syn' | 'asyn' | 'all'
       } = JSON.parse(param);
       const m = this.parseNamespace(p.name)
       let methodName = m[1]
@@ -264,7 +264,8 @@ export class BaseBridge implements JsInterface, IBaseBridge {
             const err = `call failed: please add @JavaScriptInterface decorator in the ${methodName} method`
             result.msg = err
           } else {
-            result.code = 0
+            const async = <boolean> Reflect.getMetadata(MetaData.ASYNC, method)?? false
+            result.code = (async && p.type==='syn') || (!async && p.type==='asyn') ? 1 : 0
           }
         } else {
           const err = `call failed: ${methodName} native method does not exist`
