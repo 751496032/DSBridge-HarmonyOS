@@ -138,7 +138,8 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   private handlerError(result: CallResult, err: string) {
     result.errMsg = err
     LogUtils.e(err)
-    ToastUtils.show(err)
+    // 不再弹出toast，由业务自行处理
+    // ToastUtils.show(err)
     return JSON.stringify(result)
   }
 
