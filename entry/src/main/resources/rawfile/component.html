@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+<!--        <script src="./dsBridge.js" ></script>-->
+<!--        <script src="https://cdn.jsdelivr.net/npm/m-dsbridge/dsBridge.js"></script>-->
+        <script src="https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js"> </script>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        h1, p, ul, ol {
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            height: 100%;
+            padding: 0 7px;
+            overflow: scroll;
+            padding: 50px 0 0 0;
+        }
+
+        .call-native {
+            margin: 6px;
+           width: calc(100% - 12px);
+           height:40px;
+        }
+
+        .msg-wrapper{
+         position: fixed;
+         left:0;
+         top:0;
+        }
+
+        .msg {
+            margin: 10px;
+            color: red
+        }
+
+
+    </style>
+
+</head>
+<body>
+<div class="msg-wrapper">
+    <p class="msg"></p>
+</div>
+<div class="wrapper">
+    <button class="call-native" onclick="callNative1()">调用原生组件上中的同步方法</button>
+    <button class="call-native" onclick="callNative2()">调用原生组件上中的异步方法</button>
+</div>
+</body>
+<script>
+
+const callNative1 = () => {
+    let msg = dsBridge.call('testComponentSync', JSON.stringify({data: 100}))
+    updateMsg(msg)
+}
+const callNative2 = () => {
+     dsBridge.call('testComponentAsync', JSON.stringify({data: 200}), (msg) => {
+        updateMsg(msg)
+    })
+}
+
+function updateMsg(msg) {
+    let msgEle = document.querySelector(".msg");
+    msgEle.innerHTML = msg
+}
+
+
+</script>
+</html>

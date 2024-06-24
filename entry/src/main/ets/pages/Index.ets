@@ -11,6 +11,12 @@ struct Index {
           .onClick(() => {
             router.pushUrl({ url: "pages/NativeAndJsCallsPage" })
           })
+
+        Button('在组件内定义桥接函数')
+          .margin('10vp')
+          .onClick(() => {
+            router.pushUrl({ url: "pages/NativeAndJsCallsPage2" })
+          })
       }
       .width('100%')
     }

@@ -6,7 +6,7 @@ import { JsBridgeNamespace } from '../bridge/JsBridgeNamespace'
 
 @Component
 @Entry
-struct NativeAndJsCallsPage2 {
+struct NativeAndJsCallsPage {
   private controller: WebViewControllerProxy = WebViewControllerProxy.createController()
   private url: string = "https://mp.weixin.qq.com/s/kAtQ98mhdbYheo-SIIaFOQ"
   private localPath = $rawfile('index.html')
