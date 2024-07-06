@@ -12,10 +12,16 @@ struct Index {
             router.pushUrl({ url: "pages/NativeAndJsCallsPage" })
           })
 
-        Button('在组件内定义桥接函数')
+        Button('UseInComponent')
           .margin('10vp')
           .onClick(() => {
-            router.pushUrl({ url: "pages/NativeAndJsCallsPage2" })
+            router.pushUrl({ url: "pages/UseInComponentsPage" })
+          })
+
+        Button('UseInJs2 - 适配DSBridge2.0脚本')
+          .margin('10vp')
+          .onClick(() => {
+            router.pushUrl({ url: "pages/UseInJs2Page" })
           })
       }
       .width('100%')

@@ -21,17 +21,21 @@ export interface IWebViewControllerProxy {
 
 }
 
-// export interface IAttachProxy {
-//   setWebViewControllerProxy(controller: IWebViewControllerProxy)
-//   javaScriptProxy(): JavaScriptProxy
-// }
+
 
 export interface IBaseBridge  {
+
+  /**
+   * 是否支持DSBridge2.0脚本
+   * @param enable true：使用2.0脚本，false: 3.0脚本，也是默认的
+   */
+  supportDS2(enable: boolean): void
+
   destroy(): void;
 
   callJs(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue): void
 
-  callJsMethodWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue): void
+  callJsNoParam(method: string, jsReturnValueHandler?: OnReturnValue): void
 
   setClosePageListener(listener: OnCloseWindowListener): void
 
@@ -39,7 +43,7 @@ export interface IBaseBridge  {
 
   callHandler(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue): void
 
-  callHandlerWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue): void
+  callHandlerNoParam(method: string, jsReturnValueHandler?: OnReturnValue): void
 }
 
 

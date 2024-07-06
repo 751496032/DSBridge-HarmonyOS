@@ -18,6 +18,14 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
     }
   }
 
+  supportDS2(enable: boolean): void {
+    this.bridge.supportDS2(enable)
+  }
+
+  injectDS2Js(): void {
+    this.bridge.injectDS2Js()
+  }
+
 
   addJavascriptObject = (obj: object, namespace: string = '') => {
     if (obj != null) {
@@ -26,13 +34,19 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
 
   }
 
+  hasJavascriptMethod(method: string): Promise<boolean> {
+    return this.bridge.hasJavascriptMethod(method)
+  }
+
+
+
   callJs(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue) {
     this.bridge.callJs(method, args, jsReturnValueHandler)
   }
 
 
-  hasJavascriptMethod(method: string): Promise<boolean> {
-    return this.bridge.hasJavascriptMethod(method)
+  callJsNoParam(method: string, jsReturnValueHandler?: OnReturnValue): void {
+    this.bridge.callJsNoParam(method, jsReturnValueHandler)
   }
 
   callHandler(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue): void {
@@ -40,12 +54,8 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
 
   }
 
-  callJsMethodWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue): void {
-    this.bridge.callJsMethodWithoutParam(method, jsReturnValueHandler)
-  }
-
-  callHandlerWithoutParam(method: string, jsReturnValueHandler?: OnReturnValue): void {
-    this.bridge.callHandlerWithoutParam(method, jsReturnValueHandler)
+  callHandlerNoParam(method: string, jsReturnValueHandler?: OnReturnValue): void {
+    this.bridge.callHandlerNoParam(method, jsReturnValueHandler)
   }
 
 

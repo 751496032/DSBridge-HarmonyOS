@@ -62,14 +62,20 @@ export class JsBridge {
     return p.sum + p1.sum
   }
 
+  @JavaScriptInterface(false)
+  testNoArg(): boolean {
+    LogUtils.d('testNoArg')
+    return true
+  }
+
   /**
    * 异步模版
-   * @param p
+   * @param args
    * @param handler
    */
   @JavaScriptInterface()
-  testAsync(p: string, handler: CompleteHandler) {
-    LogUtils.d("testAsync: " + JSON.stringify(p))
+  testAsync(args: string, handler: CompleteHandler) {
+    LogUtils.d("testAsync: " + JSON.stringify(args))
     this.cHandler = handler
     this.countdown(5, (time:number) => {
       if (time === 0) {

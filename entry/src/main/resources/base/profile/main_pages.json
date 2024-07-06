@@ -2,6 +2,7 @@
   "src": [
     "pages/Index",
     "pages/NativeAndJsCallsPage",
-    "pages/NativeAndJsCallsPage2"
+    "pages/UseInComponentsPage",
+    "pages/UseInJs2Page"
   ]
 }

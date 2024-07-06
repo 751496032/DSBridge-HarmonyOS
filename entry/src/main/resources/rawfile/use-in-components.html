@@ -65,7 +65,7 @@ const callNative1 = () => {
     updateMsg(msg)
 }
 const callNative2 = () => {
-     dsBridge.call('testComponentAsync', JSON.stringify({data: 200}), (msg) => {
+     dsBridge.call('testComponentAsync', 'data from h5', (msg) => {
         updateMsg(msg)
     })
 }

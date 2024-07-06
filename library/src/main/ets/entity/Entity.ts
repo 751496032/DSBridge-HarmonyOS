@@ -31,6 +31,7 @@ export interface CallResult {
 export interface Parameter {
   data?: string | Object,
   _dscbstub?: string, // JS callback函数名称 ，挂载到window对象中
+  // _dscbstub
 }
 
 export interface CompleteHandler {

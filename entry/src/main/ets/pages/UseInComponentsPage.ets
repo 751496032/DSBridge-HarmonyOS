@@ -2,6 +2,7 @@ import { LogUtils } from '../utils/LogUtils'
 
 import { CompleteHandler, JavaScriptInterface, WebViewControllerProxy } from '@hzw/ohos-dsbridge'
 import { JsBridge } from '../bridge/JsBridge'
+import { webview } from '@kit.ArkWeb'
 
 /**
  * @author: HZWei
@@ -11,18 +12,20 @@ import { JsBridge } from '../bridge/JsBridge'
 
 @Component
 @Entry
-struct NativeAndJsCallsPage2 {
+struct UseInComponentsPage {
   private controller: WebViewControllerProxy = WebViewControllerProxy.createController()
-  private url: string = "https://mp.weixin.qq.com/s/kAtQ98mhdbYheo-SIIaFOQ"
-  private localPath = $rawfile('component.html')
+  private url: string = "https://www.harmonyos.com/"
+  private localPath = $rawfile('use-in-components.html')
   @State isLoading: boolean = true
   @State msg: string = ""
 
   aboutToAppear() {
-    // 一个组件内只能存在一个无命名空间类
+    // 在一个组件内只能存在一个无命名空间类
     this.controller.addJavascriptObject(this)
-    // xxxx
-    // this.controller.addJavascriptObject(new JsBridge())
+
+
+    // 开启调试模式
+    webview.WebviewController.setWebDebuggingAccess(true);
   }
 
   @JavaScriptInterface(false)

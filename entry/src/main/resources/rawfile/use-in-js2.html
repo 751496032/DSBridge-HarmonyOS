@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+        <script src="./dsbridge2.0.js" ></script>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        h1, p, ul, ol {
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            height: 100%;
+            padding: 0 7px;
+            overflow: scroll;
+            padding: 50px 0 0 0;
+        }
+
+        .call-native {
+            margin: 6px;
+           width: calc(100% - 12px);
+           height:40px;
+        }
+
+        .msg-wrapper{
+         position: fixed;
+         left:0;
+         top:0;
+        }
+
+        .msg {
+            margin: 10px;
+            color: red
+        }
+
+
+    </style>
+
+</head>
+<body>
+<div class="msg-wrapper">
+    <p class="msg"></p>
+</div>
+<div class="wrapper">
+    <button class="call-native" onclick="callSync()">调用原生组件上中的同步方法</button>
+    <button class="call-native" onclick="callAsync()">调用原生组件上中的异步方法</button>
+    <button class="call-native" onclick="callNoArgSyn()">调用原生无参的同步方法</button>
+    <button class="call-native" onclick="callNoArgAsync()">调用原生无参的异步方法</button>
+    <button class="call-native" onclick="callProgress()">多次回调</button>
+    <button class="call-native" onclick="callUndefinedMethod()">调用不存在的方法</button>
+</div>
+</body>
+<script>
+
+const callSync = () => {
+    let msg = dsBridge.call('testComponentSync',  {msg: "callSync"})
+    updateMsg(msg)
+}
+const callAsync = () => {
+    dsBridge.call('testComponentAsync',  {msg: "callAsync"}, (msg) => {
+        updateMsg(msg)
+    })
+}
+
+const callNoArgSyn = () => {
+    let msg = dsBridge.call('testNoArgSync')
+    updateMsg(msg)
+}
+
+
+const callNoArgAsync = () => {
+    dsBridge.call('testCallNoArgAsync', (msg) => {
+        updateMsg(msg)
+    })
+}
+
+const callProgress = () => {
+    dsBridge.call('testProgressAsync',  (msg) => {
+        updateMsg(msg)
+    })
+}
+
+const callUndefinedMethod = () => {
+   let r =  dsBridge.call('callUndefinedMethod',  (msg) => {
+        updateMsg(msg)
+    })
+    console.log('run ...', r)
+    let r2 = dsBridge.call('callUndefinedMethod')
+     console.log('end ...' ,r2)
+}
+
+
+function updateMsg(msg) {
+    let msgEle = document.querySelector(".msg");
+    msgEle.innerHTML = msg
+}
+
+dsBridge.register('addValue',function(r,l){
+   console.log('addValue ...' ,r, l)
+ return r+l;
+})
+
+dsBridge.register('addValue2',function(){
+   console.log('addValue2 ...' )
+   alert('addValue2')
+})
+
+</script>
+</html>
