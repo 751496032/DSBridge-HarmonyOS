@@ -75,6 +75,7 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
 
   registerJavaScriptProxy(object: object, name: string, methodList: string[]) {
     this.controller.registerJavaScriptProxy(object, name, methodList);
+    this.refresh()
   }
 
   refresh() {

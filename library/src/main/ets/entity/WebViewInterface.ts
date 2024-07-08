@@ -27,7 +27,7 @@ export interface IBaseBridge  {
 
   /**
    * 是否支持DSBridge2.0脚本
-   * @param enable true：使用2.0脚本，false: 3.0脚本，也是默认的
+   * @param enable true：使用2.0脚本，false: 3.0脚本是默认的
    */
   supportDS2(enable: boolean): void
 

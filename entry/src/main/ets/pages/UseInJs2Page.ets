@@ -3,7 +3,6 @@ import { LogUtils } from '../utils/LogUtils'
 import { CompleteHandler, JavaScriptInterface, WebViewControllerProxy } from '@hzw/ohos-dsbridge'
 import { JsBridge } from '../bridge/JsBridge'
 import { webview } from '@kit.ArkWeb'
-import { JsBridge2 } from '../bridge/JsBridge2'
 
 /**
  * @author: HZWei

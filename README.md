@@ -3,13 +3,14 @@
 
 HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成交互，可以相互调用彼此的功能。
 
-目前兼容Android、iOS第三方DSBridge库的核心功能，基本保持原来的使用方式，后续会持续迭代保持与Android库相同的功能，减少前端和客户端的适配工作。
+目前兼容Android、iOS第三方DSBridge库的核心功能，基本保持原来的使用方式，后续会持续迭代保持与DSBridge库相同的功能，减少前端和客户端的适配工作，另外也会根据鸿蒙的特性做一些定制需求。
 
 特性：
 
 - **已适配鸿蒙NEXT版本；**
-- **原生同步方法内支持串行并发异步任务，同步等待异步结果，根据鸿蒙特点设计的需求；**
-- 支持以类的方式集中统一管理API；
+- **支持原生同步方法内执行串行异步并发任务，同步等待异步结果，根据鸿蒙特点设计的需求；**
+- **兼容DSBridge2.0与3.0 JS脚本；**
+- 支持以类的方式集中统一管理API，也支持原生自定义页面组件直接注册使用；
 - 支持同步和异步调用；
 - 支持进度回调/回传：一次调用，多次返回；
 - 支持API是否存在检测；
@@ -24,7 +25,7 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 * [DSBridge-IOS](https://github.com/wendux/DSBridge-IOS)
 
 
->由于DSBridge库作者已经停止维护了，Android端建议使用 https://github.com/751496032/DSBridge-Android ，目前本人在维护。
+>由于DSBridge库作者已停止维护，Android端建议使用 https://github.com/751496032/DSBridge-Android ，目前本人在维护。
 
 
 ## 安装
@@ -41,9 +42,9 @@ ohpm install @hzw/ohos-dsbridge
 ohpm install ../libs/library.har
 ```
 
-## 使用
+## 基本用法
 
-### Native
+### ArkTS原生侧
 
 1、在原生新建一个类`JsBridge`，实现业务API
 , 通过类来集中统一管理API，方法用`@JavaScriptInterface()`标注，是不是很眼熟呢，加一个`@JavaScriptInterface()`标注主要为了使用规范，是自定义的装饰器，与Android保持一致性。
@@ -75,7 +76,35 @@ export class JsBridge{
 }
 ```
 
-**原生同步方法不支持用async/await声明，如果需要在同步方法内执行异步任务，可以使用`taskWait()`函数来加持完成，下面会介绍基本用法**；异步方法的形参`CompleteHandler`，可用于结果异步回调。
+如果你不希望用一个类来管理API接口，可以在自定义页面组件Component中直接注册使用，然后在组件内定义API接口。
+
+```typescript
+@Component
+@Entry
+struct UseInComponentsPage{
+  aboutToAppear()
+  {
+    // 在一个组件内只能存在一个无命名空间
+    this.controller.addJavascriptObject(this)
+    
+  }
+
+  @JavaScriptInterface(false)
+  testComponentSync(args: string): string {
+      return `组件中的同步方法: ${args}`
+  }
+
+  @JavaScriptInterface()
+  testComponentAsync(args: string, handler: CompleteHandler) {
+     handler.complete(`组件中的异步方法: ${args}`)
+  }
+
+}
+
+
+```
+
+**API同步方法是不支持用async/await声明，如果需要在同步方法内执行异步任务，可以使用`taskWait()`函数来加持完成，下面会介绍基本用法**；异步方法的形参`CompleteHandler`，可用于结果异步回调。
 
 2、在原生Web组件初始化时，通过`WebViewControllerProxy`类来获取`WebviewController`实例来实现JS注入，然后将其关联到Web组件中，接着将API管理类(JsBridge)关联到`WebViewControllerProxy`中。
 
@@ -99,21 +128,48 @@ Web({ src: this.localPath, controller: this.controller.getWebViewController() })
 
 ```
 
-3、在JavaScript中通过`dsBridge`对象调用原生API，第一个参数是原生方法名称，第二参数是原生方法接收的参数，异步方法有第三个参数是回调函数，会接收`CompleteHandler`异步回调结果。
+3、通过`WebViewControllerProxy`调用JavaScript函数。
 
 ```typescript
-// 同步
-let msg = dsBridge.call('testSync', JSON.stringify({data: 100}))
+Button("调用js函数-同步")
+        .onClick(() => {
+          this.controller.callJs("showAlert", [1, 2, '666'], (v) => {
+            this.msg = v + ""
+          })
+        })
 
-// 异步
-dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
-  updateMsg(msg)
-})
+      Button("调用js函数-异步")
+        .onClick(() => {
+          this.controller.callJs("showAlertAsync", [1, 2, '666'], (v) => {
+            this.msg = v + ""
+          })
+        })
+    }
+```
+
+`callJs()`方法有三个形参，第一个是Js注册的函数名称，第二个是Js接收函数的参数，是一个数组类型，第三个是监听Js函数返回结果的函数。
+另外也提供了与Android库一样调用函数`callHandler()`。
+
+
+如果前端使用的是DSBridge2.0的JS脚本，可以通过supportDS2()方法来兼容，如下：
+
+```typescript
+  aboutToAppear() {
+    // 如果是使用DSBridge2.0 ，调用supportDS2方法
+    this.controller.supportDS2(true)
+    // 以下两种注册方式都可以，任选其一
+    this.controller.addJavascriptObject(this)
+    // this.controller.addJavascriptObject(new JsBridge2())
+    // DS2.0脚本不支持API命令空间
+    // this.controller.addJavascriptObject(new JsBridge2(),'js2')
+    // 开启调试模式
+    webview.WebviewController.setWebDebuggingAccess(true);
+  }
 ```
 
 
 
-### JavaScript
+### JavaScript侧
 
 1、在JavaScript中初始化dsBridge，通过cdn或者npm安装都可以。
 
@@ -161,27 +217,20 @@ dsBridge.registerAsyn('showAlertAsync', function (a, b, c, callback) {
 
 其中异步的`callback`函数，如果最后一个参数返回`true`则完成整个链接的调用，`false`则可以一直回调给原生，这个就是JavaScript端的一次调用，多次返回。比如需要将JavaScript端进度数据不间断同步到原生，这时就可以派上用场了。
 
-3、原生通过`WebViewControllerProxy`实例来调用JavaScript所注册的函数。
+
+3、通过`dsBridge`对象调用原生API，第一个参数是原生方法名称，第二参数是原生方法接收的参数，异步方法有第三个参数是回调函数，会接收`CompleteHandler`异步回调结果。
 
 ```typescript
-Button("调用js函数-同步")
-        .onClick(() => {
-          this.controller.callJs("showAlert", [1, 2, '666'], (v) => {
-            this.msg = v + ""
-          })
-        })
+// 同步
+let msg = dsBridge.call('testSync', JSON.stringify({data: 100}))
 
-      Button("调用js函数-异步")
-        .onClick(() => {
-          this.controller.callJs("showAlertAsync", [1, 2, '666'], (v) => {
-            this.msg = v + ""
-          })
-        })
-    }
+// 异步
+dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
+  updateMsg(msg)
+})
 ```
 
-`callJs()`方法有三个形参，第一个是Js注册的函数名称，第二个是Js接收函数的参数，是一个数组类型，第三个是监听Js函数返回结果的函数。
-另外也提供了与Android库一样调用函数`callHandler()`。
+
 
 
 ## 进度回调（一次调用，多次返回）
@@ -242,7 +291,7 @@ Js调用`close()`函数可以关闭当前页面，原生可以设置监听观察
 命名空间可以帮助你更好的管理API，这在API数量多的时候非常实用，支持你通过命名空间将API分类管理，不同级之间只需用'.' 分隔即可。支持同步与异步方式使用。
 
 
-### 原生API命令空间
+### ArkTS API命令空间
 
 原生用`WebViewControllerProxy#addJavascriptObject` 指定一个命名空间名称：
 
