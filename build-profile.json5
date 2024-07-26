@@ -33,7 +33,8 @@
         "name": "default",
         "signingConfig": "default",
         "compatibleSdkVersion": "4.1.0(11)",
-        "runtimeOS": "HarmonyOS",
+        "targetSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS"
       }
     ]
   },
