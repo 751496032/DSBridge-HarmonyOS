@@ -422,7 +422,7 @@ export class Param  extends BaseSendable{
 
 ## 交流
 
-使用中如有疑问，可加v进群交流：751496032
+使用中如有疑问，可加v进群交流：751496032，备注鸿蒙
 
 
 ## 最后
