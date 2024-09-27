@@ -15,6 +15,7 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 - 支持进度回调/回传：一次调用，多次返回；
 - 支持API是否存在检测；
 - 支持Javascript关闭页面的监听与拦截，
+- 支持异常信息监听;
 - 支持命名空间API。
 
 
@@ -187,6 +188,8 @@ npm i m-dsbridge
 https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js
 ```
 
+> 如果m-dsbridge 发生异常，建议切换到 https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js
+
 2、通过`dsBridge`对象注册Js函数，供原生调用。
 
 ```typescript
@@ -224,8 +227,13 @@ dsBridge.registerAsyn('showAlertAsync', function (a, b, c, callback) {
 // 同步
 let msg = dsBridge.call('testSync', JSON.stringify({data: 100}))
 
-// 异步
+// 异步, 参数可以是对象或者基本类型
 dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
+  updateMsg(msg)
+})
+
+// 如果你使用的是DSBridge 2.0脚本，异步调用的参数必须是一个对象
+dsBridge.call('testAsync', {data: 200}, (msg) => {
   updateMsg(msg)
 })
 ```
@@ -420,7 +428,21 @@ export class Param  extends BaseSendable{
 
 `taskWait()`函数是一个轻量级的同步等待函数，不建议执行耗时过长的任务，如果在3s内没有完成任务，会自动结束等待将结果返回，可能会存在数据丢失的情况；对于特别耗时的任务建议使用异步桥接函数。
 
+## 监听异常
 
+可以通过setGlobalErrorMessageListener()方法来监听调用异常，如下：
+
+
+```typescript
+    this.controller.setGlobalErrorMessageListener((err: string) => {
+      promptAction.showDialog({title:`${err}`})
+    })
+
+```
+
+## 交流
+
+如有疑问，请提issues, 或加v进群交流：751496032，备注鸿蒙
 
 
 ## 最后

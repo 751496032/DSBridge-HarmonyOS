@@ -15,6 +15,7 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 - 支持进度回调/回传：一次调用，多次返回；
 - 支持API是否存在检测；
 - 支持Javascript关闭页面的监听与拦截，
+- 支持异常信息监听;
 - 支持命名空间API。
 
 
@@ -441,7 +442,7 @@ export class Param  extends BaseSendable{
 
 ## 交流
 
-如有疑问，建议提issues, 或加v进群交流：751496032，备注鸿蒙
+如有疑问，请提issues, 或加v进群交流：751496032，备注鸿蒙
 
 
 ## 最后
