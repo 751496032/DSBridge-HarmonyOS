@@ -70,11 +70,20 @@ export interface NativeCallInfo {
   method: string
 }
 
+export interface SS {
+
+  name: string,
+  type: 'syn' | 'asyn' | 'all'
+
+}
+
 export type OnReturnValue = (any) => void
 
 export type OnCloseWindowListener = () => boolean
 
 export type Args = number | string | boolean | Object
+
+export type OnErrorMessageListener = (string) => void
 
 
 

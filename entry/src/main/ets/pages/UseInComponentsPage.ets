@@ -22,6 +22,9 @@ struct UseInComponentsPage {
   aboutToAppear() {
     // 在一个组件内只能存在一个无命名空间类
     this.controller.addJavascriptObject(this)
+    this.controller.setErrorMessageListener((err: string) => {
+
+    })
 
 
     // 开启调试模式

@@ -1,4 +1,4 @@
-import { Args, JavaScriptProxy, OnCloseWindowListener, OnReturnValue } from './Entity';
+import { Args, JavaScriptProxy, OnCloseWindowListener, OnReturnValue,OnErrorMessageListener } from './Entity';
 
 /**
  * web组件api的代理接口，不能涉及到ohos的相关属性
@@ -44,6 +44,8 @@ export interface IBaseBridge  {
   callHandler(method: string, args?: Args[], jsReturnValueHandler?: OnReturnValue): void
 
   callHandlerNoParam(method: string, jsReturnValueHandler?: OnReturnValue): void
+
+  setErrorMessageListener(listener: OnErrorMessageListener): void
 }
 
 
