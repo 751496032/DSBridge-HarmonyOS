@@ -9,13 +9,16 @@ import {
   CompleteHandler,
   JavaScriptInterface,
   OnCloseWindowListener,
-  Args
+  Args,
+  OnErrorMessageListener,
+  SS
 } from './Entity'
 import "reflect-metadata"
 import { LogUtils } from '../utils/LogUtils'
 import router from '@ohos.router'
 import { IBaseBridge, IWebViewControllerProxy } from './WebViewInterface'
 import { ToastUtils } from '../utils/ToastUtils'
+import { JSON } from '@kit.ArkTS'
 
 export class BaseBridge implements JsInterface, IBaseBridge {
 
@@ -27,6 +30,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   private jsClosePageListener?: OnCloseWindowListener
   private interrupt = false
   private isSupportDS2: boolean = false
+  private onErrorListener?:OnErrorMessageListener
 
   supportDS2(enable: boolean): void {
     this.isSupportDS2 = enable
@@ -34,6 +38,10 @@ export class BaseBridge implements JsInterface, IBaseBridge {
 
   setWebViewControllerProxy(controller: IWebViewControllerProxy){
     this.controller = controller
+  }
+
+  setErrorMessageListener(listener: OnErrorMessageListener): void {
+    this.onErrorListener = listener
   }
 
 
@@ -180,6 +188,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
     LogUtils.e(err)
     // 不再弹出toast，由业务自行处理
     // ToastUtils.show(err)
+    this.onErrorListener?.(err)
     return JSON.stringify(result)
   }
 
@@ -203,6 +212,8 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       data = JSON.parse(json)
     } catch (e) {
       LogUtils.e(e)
+      const msg = JSON.stringify(e)
+      this.handlerError({ errMsg: msg } as CallResult, msg)
     }
     return data
 
@@ -310,11 +321,12 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       msg: string
     } = { code: -1, msg: "" };
     try {
-      const p: {
+      const pp: {
         name: string,
         type: 'syn' | 'asyn' | 'all'
+
       } = JSON.parse(param);
-      const m = this.parseNamespace(p.name)
+      const m = this.parseNamespace(pp.name)
       let methodName = m[1]
       const obj = this.controller.javaScriptNamespaceInterfaces.get(m[0])
       const method = Reflect.get(this.isNotEmpty(obj) ? obj : this, methodName);
@@ -330,7 +342,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
             result.msg = err
           } else {
             const async = <boolean> Reflect.getMetadata(MetaData.ASYNC, method) ?? false
-            result.code = (async && p.type === 'syn') || (!async && p.type === 'asyn') ? 1 : 0
+            result.code = (async && pp.type === 'syn') || (!async && pp.type === 'asyn') ? 1 : 0
           }
         } else {
           const err = `call failed: ${methodName} native method does not exist`
@@ -342,7 +354,8 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       result.msg = e
     }
     if (this.isNotEmpty(result.msg)) {
-       LogUtils.e(result.msg)
+      LogUtils.e(result.msg)
+      this.handlerError({ errMsg: result.msg } as CallResult, result.msg)
     }
     return result.code === 0
   }
@@ -375,6 +388,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
     this.jsClosePageListener = null
     this.handlerMap.clear()
     this.isSupportDS2 = false
+    this.onErrorListener = null
   }
 
   injectDS2Js(){

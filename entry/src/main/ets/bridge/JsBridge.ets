@@ -22,7 +22,21 @@ export class Param  extends BaseSendable{
     //   }
     // }
     // throw new Error("ddd")
-    this.sum =  await this.add()
+    // this.sum =  await this.add()
+    // let target = this
+    // this.sum = await new Promise<number>(async (resolve, reject) => {
+    //   let sum = this.add()
+    //   resolve(sum)
+    // })
+    this.sum = await this.addTest()
+
+  }
+
+  async addTest() :Promise<number>{
+    return  new Promise<number>(async (resolve, reject) => {
+      let sum = this.add()
+      resolve(sum)
+    })
   }
 
   async add(){

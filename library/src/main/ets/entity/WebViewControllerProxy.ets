@@ -1,6 +1,6 @@
 import webview from '@ohos.web.webview';
 import { BaseBridge } from './BaseBridge';
-import { Args, JsInterface, OnCloseWindowListener, OnReturnValue } from './Entity';
+import { Args, JsInterface, OnCloseWindowListener, OnErrorMessageListener, OnReturnValue } from './Entity';
 import { IWebViewControllerProxy, IBaseBridge } from './WebViewInterface';
 
 
@@ -16,6 +16,10 @@ export class WebViewControllerProxy implements IWebViewControllerProxy, IOhosWeb
     if (obj != null) {
       this.addJavascriptObject(obj)
     }
+  }
+
+  setErrorMessageListener(listener: OnErrorMessageListener): void {
+    this.bridge.setErrorMessageListener(listener)
   }
 
   supportDS2(enable: boolean): void {
