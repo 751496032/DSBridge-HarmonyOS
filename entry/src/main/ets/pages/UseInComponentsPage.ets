@@ -3,6 +3,7 @@ import { LogUtils } from '../utils/LogUtils'
 import { CompleteHandler, JavaScriptInterface, WebViewControllerProxy } from '@hzw/ohos-dsbridge'
 import { JsBridge } from '../bridge/JsBridge'
 import { webview } from '@kit.ArkWeb'
+import { promptAction } from '@kit.ArkUI'
 
 /**
  * @author: HZWei
@@ -22,8 +23,8 @@ struct UseInComponentsPage {
   aboutToAppear() {
     // 在一个组件内只能存在一个无命名空间类
     this.controller.addJavascriptObject(this)
-    this.controller.setErrorMessageListener((err: string) => {
-
+    this.controller.setGlobalErrorMessageListener((err: string) => {
+      promptAction.showDialog({title:`${err}`})
     })
 
 

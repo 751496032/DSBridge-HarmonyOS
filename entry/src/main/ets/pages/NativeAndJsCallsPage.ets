@@ -1,8 +1,9 @@
 import { LogUtils } from '../utils/LogUtils'
 
-import { WebViewControllerProxy } from '@hzw/ohos-dsbridge'
+import { JavaScriptInterface, WebViewControllerProxy } from '@hzw/ohos-dsbridge'
 import { JsBridge } from '../bridge/JsBridge'
 import { JsBridgeNamespace } from '../bridge/JsBridgeNamespace'
+import { promptAction } from '@kit.ArkUI'
 
 @Component
 @Entry
@@ -16,10 +17,21 @@ struct NativeAndJsCallsPage {
   aboutToAppear() {
     this.controller.addJavascriptObject(new JsBridge())
     this.controller.addJavascriptObject(new JsBridgeNamespace(), "namespace")
+    // this.controller.addJavascriptObject(this)
     this.controller.setClosePageListener(() => {
       return true; // false 会拦截关闭页面
     })
+    this.controller.setGlobalErrorMessageListener((err: string) => {
+      promptAction.showDialog({title:`err: ${err}`})
+    })
   }
+
+  @JavaScriptInterface(false)
+  testNoArg(): boolean {
+    LogUtils.d('testNoArg')
+    return true
+  }
+
 
   aboutToDisappear() {
     this.controller.destroy()

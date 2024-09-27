@@ -45,7 +45,7 @@ export interface IBaseBridge  {
 
   callHandlerNoParam(method: string, jsReturnValueHandler?: OnReturnValue): void
 
-  setErrorMessageListener(listener: OnErrorMessageListener): void
+  setGlobalErrorMessageListener(listener: OnErrorMessageListener): void
 }
 
 

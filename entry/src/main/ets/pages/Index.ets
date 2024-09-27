@@ -7,12 +7,12 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button('NativeAndJsCalls')
+        Button('NativeAndJsCalls - DSBridge3.0')
           .onClick(() => {
             router.pushUrl({ url: "pages/NativeAndJsCallsPage" })
           })
 
-        Button('UseInComponent')
+        Button('UseInComponent - DSBridge3.0')
           .margin('10vp')
           .onClick(() => {
             router.pushUrl({ url: "pages/UseInComponentsPage" })

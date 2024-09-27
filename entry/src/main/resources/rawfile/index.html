@@ -103,9 +103,14 @@
 
     const callNative4 = () => {
         // 异步
-        dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
+<!--        dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {-->
+<!--            updateMsg(msg)-->
+<!--        })-->
+
+         dsBridge.call('testAsync', {name:'hzw'}, (msg) => {
             updateMsg(msg)
         })
+
 
     }
 

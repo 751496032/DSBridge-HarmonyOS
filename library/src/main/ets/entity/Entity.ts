@@ -70,11 +70,9 @@ export interface NativeCallInfo {
   method: string
 }
 
-export interface SS {
-
+export interface NativeMethodParam {
   name: string,
   type: 'syn' | 'asyn' | 'all'
-
 }
 
 export type OnReturnValue = (any) => void

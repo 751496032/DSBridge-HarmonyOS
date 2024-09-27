@@ -3,6 +3,8 @@ import { LogUtils } from '../utils/LogUtils'
 import { CompleteHandler, JavaScriptInterface, WebViewControllerProxy } from '@hzw/ohos-dsbridge'
 import { JsBridge } from '../bridge/JsBridge'
 import { webview } from '@kit.ArkWeb'
+import { promptAction } from '@kit.ArkUI'
+import { JsBridge2 } from '../bridge/JsBridge2'
 
 /**
  * @author: HZWei
@@ -25,10 +27,17 @@ struct UseInJs2Page {
     // 以下两种注册方式都可以，任选其一
     this.controller.addJavascriptObject(this)
     // this.controller.addJavascriptObject(new JsBridge2())
-    // DS2.0脚本不支持API命令空间
+
+
+    // DS2.0脚本不支持API命令空间 xx
     // this.controller.addJavascriptObject(new JsBridge2(),'js2')
     // 开启调试模式
     webview.WebviewController.setWebDebuggingAccess(true);
+
+    this.controller.setGlobalErrorMessageListener((err: string) => {
+      promptAction.showDialog({title:`${err}`})
+    })
+
   }
 
   @JavaScriptInterface(false)
