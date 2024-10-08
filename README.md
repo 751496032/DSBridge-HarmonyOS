@@ -45,11 +45,6 @@ DSBridge-HarmonyOS已上架录入到[华为鸿蒙生态伙伴组件专区](https
 ohpm install @hzw/ohos-dsbridge
 ```
 
-或者安装本地har包
-
-```text
-ohpm install ../libs/library.har
-```
 
 ## 基本用法
 
