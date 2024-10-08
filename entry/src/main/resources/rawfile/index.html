@@ -59,6 +59,7 @@
     <button class="call-native" onclick="callNative3()">调用原生testSync()有参同步方法</button>
     <button class="call-native" onclick="callNative4()">调用原生testAsync()有参异步方法</button>
     <button class="call-native" onclick="callNative33()">调用原生无参同步方法</button>
+    <button class="call-native" onclick="callNative34()">调用原生无参异步方法，没有回调函数</button>
     <button class="call-native" onclick="callNative5()">关闭当前页面</button>
     <button class="call-native" onclick="callNative6()">调用命名空间testSync()同步方法</button>
     <button class="call-native" onclick="callNative7()">调用命名空间testAsync()同步方法</button>
@@ -99,6 +100,11 @@
         // 同步无参
         let msg = dsBridge.call('testNoArg')
         updateMsg(msg)
+    }
+
+    const callNative34 = () => {
+        // 异步无参 ，没有回调函数
+        dsBridge.call('testNoArgAsync')
     }
 
     const callNative4 = () => {

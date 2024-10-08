@@ -32,7 +32,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   private _isSupportDS2: boolean = false
 
 
-  private onErrorListener?:OnErrorMessageListener
+  private onErrorListener?: OnErrorMessageListener
 
   supportDS2(enable: boolean): void {
     this._isSupportDS2 = enable
@@ -79,10 +79,6 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   }
 
   private isNotEmpty(val: Object): boolean {
-    // let isNotEmpty = val !== undefined && val !== null
-    // if (typeof val === 'string') {
-    //   return isNotEmpty && val.trim().length > 0
-    // }
     return !this.isEmpty(val)
   }
 
@@ -164,7 +160,11 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       }
       try {
         let len = method.length
-        if (len === 1) {
+
+        if (len === 0) {
+          result.code = 0
+          method.call(obj)
+        } else if (len === 1) {
           result.code = 0
           method.call(obj, handler)
         } else if (len === 2) {

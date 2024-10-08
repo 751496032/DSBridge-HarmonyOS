@@ -1,5 +1,6 @@
 import { LogUtils } from '../utils/LogUtils';
 import { BaseSendable, CompleteHandler, JavaScriptInterface, taskWait } from '@hzw/ohos-dsbridge';
+import { ToastUtils } from '@hzw/ohos-dsbridge/src/main/ets/utils/ToastUtils';
 
 @Sendable
 export class Param  extends BaseSendable{
@@ -80,6 +81,12 @@ export class JsBridge {
   testNoArg(): boolean {
     LogUtils.d('testNoArg')
     return true
+  }
+
+  @JavaScriptInterface()
+  testNoArgAsync() {
+    LogUtils.d('testNoArgAsync')
+    ToastUtils.show("testNoArgAsync")
   }
 
   /**

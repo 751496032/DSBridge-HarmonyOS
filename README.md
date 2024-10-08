@@ -19,6 +19,13 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 - 支持命名空间API。
 
 
+
+DSBridge-HarmonyOS已上架录入到[华为鸿蒙生态伙伴组件专区](https://developer.huawei.com/consumer/cn/market/landing/component)
+
+![鸿蒙生态市场](https://gitee.com/common-apps/images/raw/master/oh.png)
+
+
+
 源码：
 
 * [DSBridge-HarmonyOS](https://github.com/751496032/DSBridge-HarmonyOS)
