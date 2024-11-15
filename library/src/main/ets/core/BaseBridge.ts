@@ -131,8 +131,12 @@ export class BaseBridge implements JsInterface, IBaseBridge {
     }
 
     let jsParam: Parameter = this.safeParse(params)
-    async = (this.isNotEmpty(jsParam._dscbstub)) || async
+    // async = (this.isNotEmpty(jsParam._dscbstub)) || async
     LogUtils.d(`call async: ${async}`)
+    if (!async && this.isNotEmpty(jsParam._dscbstub)) {
+      const err = 'call failed: h5 async differs from native registration.'
+      return this.handlerError(result, err)
+    }
     let data: string = (this.isObject(jsParam.data) ? JSON.stringify(jsParam.data) : jsParam.data) as string
     if (this._isSupportDS2) {
       if (async) {

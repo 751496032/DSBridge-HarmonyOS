@@ -92,7 +92,8 @@
 
     const callNative3 = () => {
         // 同步
-        let msg = dsBridge.call('testSync', JSON.stringify({data: 100}))
+         let msg = dsBridge.call('testSync', JSON.stringify({data: 100}))
+        // let msg = dsBridge.call('testSync', JSON.stringify({data: 100}), ()=>{}) // 错
         updateMsg(msg)
     }
 

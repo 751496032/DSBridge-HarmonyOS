@@ -12,7 +12,7 @@ export class LogUtils {
     if (!this.enable) {
       return
     }
-    hilog.debug(0x0001, tag, msg)
+    hilog.info(0x0001, tag, msg)
   }
 
 
