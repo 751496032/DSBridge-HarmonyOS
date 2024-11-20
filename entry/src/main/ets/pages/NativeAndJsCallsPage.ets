@@ -121,6 +121,10 @@ struct NativeAndJsCallsPage {
               })
             })
 
+          Button("backward").onClick((event: ClickEvent) => {
+            this.controller.getWebViewController().backward()
+          })
+
         }
         .width('100%')
       }

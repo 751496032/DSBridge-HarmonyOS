@@ -23,6 +23,10 @@ struct Index {
           .onClick(() => {
             router.pushUrl({ url: "pages/UseInJs2Page" })
           })
+
+        Button("加载h5").onClick((event: ClickEvent) => {
+          router.pushUrl({ url: "pages/TestPage" })
+        })
       }
       .width('100%')
     }

@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/NativeAndJsCallsPage",
     "pages/UseInComponentsPage",
-    "pages/UseInJs2Page"
+    "pages/UseInJs2Page",
+    "pages/TestPage"
   ]
 }
