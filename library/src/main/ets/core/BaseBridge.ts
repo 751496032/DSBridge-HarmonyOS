@@ -383,9 +383,9 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       return
     }
     if (!this.onClosePageListener || this.onClosePageListener() === true) {
-     this.onPageClose()
+      this.onPageClose()
+      this.destroy()
     }
-    this.destroy()
   }
 
   private checkIfDS2(): boolean {

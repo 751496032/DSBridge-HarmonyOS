@@ -20,7 +20,7 @@ struct NativeAndJsCallsPage {
     // this.controller.addJavascriptObject(this)
     this.controller.setClosePageListener(() => {
       // 返回false由 开发者自行实现关闭逻辑
-      return false;
+      return true;
     })
     this.controller.setGlobalErrorMessageListener((err: string) => {
       promptAction.showDialog({title:`err: ${err}`})
