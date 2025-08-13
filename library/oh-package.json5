@@ -15,7 +15,7 @@
   "main": "index.ets",
   "repository": "https://github.com/751496032/DSBridge-HarmonyOS.git",
   "homepage": "https://gitee.com/common-apps/dsbrigde-harmony-os.git",
-  "version": "1.7.2",
+  "version": "1.8.0",
   "dependencies": {
     "reflect-metadata": "^0.1.13"
   }
