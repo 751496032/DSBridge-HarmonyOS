@@ -1,37 +1,25 @@
 {
   "app": {
     "signingConfigs": [
-      //      {
-      //        "name": "default",
-      //        "type": "HarmonyOS",
-      //        "material": {
-      //          "certpath": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.cer",
-      //          "storePassword": "0000001B1C1534C7E1ABCEBA1CD52558F7E7779255409A648491F2D87B76D9A24466026C40941730300685",
-      //          "keyAlias": "debugKey",
-      //          "keyPassword": "0000001B4F1F3B61AB4D995FF1EE597FF674AC21FEDF291E39CD446C317255684ECD4EEEA1B449BFA1336E",
-      //          "profile": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.p7b",
-      //          "signAlg": "SHA256withECDSA",
-      //          "storeFile": "C:\\Users\\XML\\.ohos\\config\\auto_debug_dsbrige-demo_com.hzw.dsbrige_40086000000034244.p12"
-      //        }
-      //      },
-      //      {
-      //        "name": "dev",
-      //        "type": "HarmonyOS",
-      //        "material": {
-      //          "storePassword": "0000001AD3E70B3390747316F31068ACB366520BEB3A38C0CC40BD3598C13D48CBD879A87CEE8C033F80",
-      //          "certpath": "./config/dsbridge.cer",
-      //          "keyAlias": "dsbridge",
-      //          "keyPassword": "0000001ADDD7BEAA0C1757391F0D72EAEFF37965BA2DFC12054DF5FDCFB17325D3559FA70B5E3C8FA801",
-      //          "profile": "./config/dsbridgeDebug.p7b",
-      //          "signAlg": "SHA256withECDSA",
-      //          "storeFile": "./config/dsbridge.p12"
-      //        }
-      //      }
+      {
+        "name": "dev",
+        "type": "HarmonyOS",
+        "material": {
+          // h123456789
+          "storePassword": "0000001A31E60F5AB0A6681B2BF4B22D7264B2658107C2737EF2E4D9E51B76B3179471B24143930EF60C",
+          "certpath": "./config/dsbridge.cer",
+          "keyAlias": "hzw",
+          "keyPassword": "0000001AE1DD81366E373F816ED64C8D2F190F7A5A1FBAE6CB5D9801F7B23FDDD765F1E761C5B7FEDFDA",
+          "profile": "./config/dsbridge.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "./config/dsbridge.p12"
+        }
+      }
     ],
     "products": [
       {
         "name": "default",
-        "signingConfig": "default",
+        "signingConfig": "dev",
         "compatibleSdkVersion": "5.0.0(12)",
         "targetSdkVersion": "5.0.0(12)",
         "runtimeOS": "HarmonyOS"
