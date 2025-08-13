@@ -14,7 +14,7 @@ import { JsBridge2 } from '../bridge/JsBridge2'
 @Component
 @Entry
 struct TestPage {
-  private controller: WebViewControllerProxy = WebViewControllerProxy.createController()
+  private proxy: WebViewControllerProxy = WebViewControllerProxy.createController()
   private url: string = "https://www.harmonyos.com/"
   @State isLoading: boolean = true
   @State msg: string = ""
@@ -29,15 +29,15 @@ struct TestPage {
 
 
   aboutToDisappear() {
-    this.controller.destroy()
+    this.proxy.destroy()
   }
 
   build() {
     Column({space:20}) {
       Stack() {
-        Web({ src: this.url, controller: this.controller.getWebViewController() })
+        Web({ src: this.url, controller: this.proxy.webviewController })
           .javaScriptAccess(true)
-          .javaScriptProxy(this.controller.javaScriptProxy)
+          .javaScriptProxy(this.proxy.javaScriptProxy)
           .onAlert((event) => {
             return false
           })
@@ -70,8 +70,8 @@ struct TestPage {
         .padding(10)
 
       Button("back").onClick((event: ClickEvent) => {
-         if (this.controller.getWebViewController().accessBackward()){
-           this.controller.getWebViewController().backward()
+         if (this.proxy.webviewController.accessBackward()){
+           this.proxy.webviewController.backward()
          }else {
            router.back()
          }

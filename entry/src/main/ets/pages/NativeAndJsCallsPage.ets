@@ -19,7 +19,8 @@ struct NativeAndJsCallsPage {
     this.controller.addJavascriptObject(new JsBridgeNamespace(), "namespace")
     // this.controller.addJavascriptObject(this)
     this.controller.setClosePageListener(() => {
-      return true; // false 会拦截关闭页面
+      // 返回false由 开发者自行实现关闭逻辑
+      return false;
     })
     this.controller.setGlobalErrorMessageListener((err: string) => {
       promptAction.showDialog({title:`err: ${err}`})
@@ -41,7 +42,7 @@ struct NativeAndJsCallsPage {
     // 注意需要请求网络权限
     Column() {
       Stack() {
-        Web({ src: this.localPath, controller: this.controller.getWebViewController() })
+        Web({ src: this.localPath, controller: this.controller.webviewController })
           .javaScriptAccess(true)
           .javaScriptProxy(this.controller.javaScriptProxy)
           .onAlert((event) => {

@@ -77,11 +77,17 @@ export interface NativeMethodParam {
 
 export type OnReturnValue = (any) => void
 
+/**
+ * 监听页面关闭
+ * @returns true: 不拦截，false: 拦截
+ */
 export type OnCloseWindowListener = () => boolean
 
 export type Args = number | string | boolean | Object
 
 export type OnErrorMessageListener = (string) => void
+
+export type OnPageClose = () => void
 
 
 

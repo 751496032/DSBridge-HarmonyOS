@@ -97,7 +97,7 @@ struct UseInJs2Page {
   build() {
     Column() {
       Stack() {
-        Web({ src: this.localPath, controller: this.controller.getWebViewController() })
+        Web({ src: this.localPath, controller: this.controller.webviewController })
           .javaScriptAccess(true)
           .javaScriptProxy(this.controller.javaScriptProxy)
           .onAlert((event) => {

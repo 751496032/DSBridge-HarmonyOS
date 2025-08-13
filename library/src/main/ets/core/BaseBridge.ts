@@ -11,7 +11,8 @@ import {
   OnCloseWindowListener,
   Args,
   OnErrorMessageListener,
-  NativeMethodParam
+  NativeMethodParam,
+  OnPageClose
 } from './Entity'
 import "reflect-metadata"
 import { LogUtils } from '../utils/LogUtils'
@@ -27,12 +28,14 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   private isInject: boolean = true
   private callID: number = 0
   private handlerMap = new Map<number, OnReturnValue>()
-  private jsClosePageListener?: OnCloseWindowListener
+  private onClosePageListener?: OnCloseWindowListener
   private interrupt = false
   private _isSupportDS2: boolean = false
-
-
   private onErrorListener?: OnErrorMessageListener
+  private isDS2Injected: boolean = false
+  private onPageClose: OnPageClose = () => {
+    router.back()
+  }
 
   supportDS2(enable: boolean): void {
     this._isSupportDS2 = enable
@@ -41,6 +44,10 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   public get isSupportDS2(): boolean {
     return this._isSupportDS2
   }
+
+  // setPageClose(listener: OnPageClose) {
+  //   this.onPageClose = listener
+  // }
 
   setWebViewControllerProxy(controller: IWebViewControllerProxy){
     this.controller = controller
@@ -367,7 +374,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   }
 
   setClosePageListener(listener: OnCloseWindowListener) {
-    this.jsClosePageListener = listener
+    this.onClosePageListener = listener
   }
 
   @JavaScriptInterface(false)
@@ -375,10 +382,10 @@ export class BaseBridge implements JsInterface, IBaseBridge {
     if (this.checkIfDS2()) {
       return
     }
-    if (this.jsClosePageListener == null || this.jsClosePageListener() === true) {
-      router.back()
-      this.destroy()
+    if (!this.onClosePageListener || this.onClosePageListener() === true) {
+     this.onPageClose()
     }
+    this.destroy()
   }
 
   private checkIfDS2(): boolean {
@@ -391,17 +398,19 @@ export class BaseBridge implements JsInterface, IBaseBridge {
 
   destroy(){
     this.interrupt = true
-    this.jsClosePageListener = null
+    this.onClosePageListener = null
     this.handlerMap.clear()
     this._isSupportDS2 = false
     this.onErrorListener = null
   }
 
   injectDS2Js(){
-    if (this._isSupportDS2) {
+    if (this._isSupportDS2 && !this.isDS2Injected) {
       let script =
         "function getJsBridge(){window._dsf=window._dsf||{};return{call:function(b,a,c){\"function\"==typeof a&&(c=a,a={});if(\"function\"==typeof c){window.dscb=window.dscb||0;var d=\"dscb\"+window.dscb++;window[d]=c;a._dscbstub=d}a=JSON.stringify(a||{});return window._dswk?prompt(window._dswk+b,a):\"function\"==typeof _dsbridge?_dsbridge(b,a):_dsbridge.call(b,a)},register:function(b,a){\"object\"==typeof b?Object.assign(window._dsf,b):window._dsf[b]=a}}}dsBridge=getJsBridge();"
        this.controller.runJavaScript(script)
+      // 完成DS2.0脚本的注入
+      this.isDS2Injected = true
     }
 
   }

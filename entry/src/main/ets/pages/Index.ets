@@ -6,20 +6,18 @@ struct Index {
 
   build() {
     Row() {
-      Column() {
+      Column({space:12}) {
         Button('NativeAndJsCalls - DSBridge3.0')
           .onClick(() => {
             router.pushUrl({ url: "pages/NativeAndJsCallsPage" })
           })
 
         Button('UseInComponent - DSBridge3.0')
-          .margin('10vp')
           .onClick(() => {
             router.pushUrl({ url: "pages/UseInComponentsPage" })
           })
 
         Button('UseInJs2 - 适配DSBridge2.0脚本')
-          .margin('10vp')
           .onClick(() => {
             router.pushUrl({ url: "pages/UseInJs2Page" })
           })
@@ -27,6 +25,7 @@ struct Index {
         Button("加载h5").onClick((event: ClickEvent) => {
           router.pushUrl({ url: "pages/TestPage" })
         })
+
       }
       .width('100%')
     }
