@@ -447,7 +447,7 @@ export class Param  extends BaseSendable{
 
  **欢迎大家提交issue、PR等建议（可以统一收集问题，方便更多人查阅，会第一时间回复处理）** ，或进群交流(+wx: 751496032)。
 
-> 加wx备注：鸿蒙，不然不通过
+> 加wx备注：鸿蒙
 
 ## 最后
 
