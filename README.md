@@ -443,14 +443,15 @@ export class Param  extends BaseSendable{
 
 ```
 
-## 交流
+## 联系
 
-如有疑问，请提issues, 或加v进群交流：751496032，备注鸿蒙
+ **欢迎大家提交issue、PR等建议（可以统一收集问题，方便更多人查阅，会第一时间回复处理）** ，或进群交流(+wx: 751496032)。
 
+> 加wx备注：鸿蒙，不然不通过
 
 ## 最后
 
-感谢[@name718](https://github.com/name718)、[@fjc0k](https://github.com/fjc0k)等各位大佬的支持与反馈。欢迎大家多多反馈，一起支持完善鸿蒙生态。
+感谢[@name718](https://github.com/name718)、[@fjc0k](https://github.com/fjc0k)等各位的支持与反馈。
 
 
 
