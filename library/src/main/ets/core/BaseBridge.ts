@@ -19,6 +19,7 @@ import { LogUtils } from '../utils/LogUtils'
 import router from '@ohos.router'
 import { IBaseBridge, IWebViewControllerProxy } from './WebViewInterface'
 import { ToastUtils } from '../utils/ToastUtils'
+import { resolveHasJavascriptMethod } from '../utils/HasJavascriptMethodHelper'
 import { JSON } from '@kit.ArkTS'
 
 export class BaseBridge implements JsInterface, IBaseBridge {
@@ -284,14 +285,10 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   }
 
   hasJavascriptMethod(method: string): Promise<boolean> {
-    if (this.checkIfDS2()) {
-      return
-    }
-    return new Promise((resolve, reject) => {
-      let handler: OnReturnValue = (has: boolean) => {
-        resolve(has)
-      }
-      this.callHandler("_hasJavascriptMethod", [method], handler)
+    // DS2 does not support this probe; always return false instead of undefined.
+    // If the page has no dsbridge, JS never calls back — resolve false instead of hanging.
+    return resolveHasJavascriptMethod(this.checkIfDS2(), (onResult) => {
+      this.callHandler("_hasJavascriptMethod", [method], onResult)
     })
   }
 
