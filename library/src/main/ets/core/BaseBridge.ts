@@ -9,7 +9,6 @@ import {
   CompleteHandler,
   JavaScriptInterface,
   OnCloseWindowListener,
-  Args,
   OnErrorMessageListener,
   NativeMethodParam,
   OnPageClose
@@ -19,6 +18,7 @@ import { LogUtils } from '../utils/LogUtils'
 import router from '@ohos.router'
 import { IBaseBridge, IWebViewControllerProxy } from './WebViewInterface'
 import { ToastUtils } from '../utils/ToastUtils'
+import { createAsyncCompleteHandler } from '../utils/AsyncCallbackHelper'
 import { JSON } from '@kit.ArkTS'
 
 export class BaseBridge implements JsInterface, IBaseBridge {
@@ -156,19 +156,13 @@ export class BaseBridge implements JsInterface, IBaseBridge {
 
     }
     if (async) {
-      const handler = <CompleteHandler> {
-        complete: (value: Args) => {
-          result.code = 0
-          result.data = value
-          this.callbackToJs(jsParam, result)
-        },
-        setProgressData: (value: Args) => {
-          result.code = 0
-          result.data = value
-          this.callbackToJs(jsParam, result, false)
-        },
-
-      }
+      // Capture stub now and snapshot a fresh payload per complete().
+      // Do not mutate `result` or re-read jsParam._dscbstub — parallel
+      // calls would then share a last-result slot or overwrite each other.
+      const callbackStub = jsParam._dscbstub
+      const handler = <CompleteHandler> createAsyncCompleteHandler(callbackStub, (script) => {
+        this.dispatchAsyncCallback(script)
+      })
       try {
         let len = method.length
 
@@ -236,15 +230,9 @@ export class BaseBridge implements JsInterface, IBaseBridge {
 
   }
 
-  private callbackToJs = (jsParam: Parameter, result: CallResult, complete: boolean = true) => {
+  private dispatchAsyncCallback = (script: string) => {
     if (this.interrupt) return;
-    let args = JSON.stringify(result)
-    let callbackName = jsParam._dscbstub
-    LogUtils.d(`callbackToJs : ${callbackName}(${args})`)
-    let script = `${callbackName}(${args}.data);`
-    if (complete) {
-      script += "delete window." + callbackName
-    }
+    LogUtils.d(`callbackToJs : ${script}`)
     this.controller.runJavaScript(script)
   }
 
@@ -407,7 +395,7 @@ export class BaseBridge implements JsInterface, IBaseBridge {
   injectDS2Js(){
     if (this._isSupportDS2 && !this.isDS2Injected) {
       let script =
-        "function getJsBridge(){window._dsf=window._dsf||{};return{call:function(b,a,c){\"function\"==typeof a&&(c=a,a={});if(\"function\"==typeof c){window.dscb=window.dscb||0;var d=\"dscb\"+window.dscb++;window[d]=c;a._dscbstub=d}a=JSON.stringify(a||{});return window._dswk?prompt(window._dswk+b,a):\"function\"==typeof _dsbridge?_dsbridge(b,a):_dsbridge.call(b,a)},register:function(b,a){\"object\"==typeof b?Object.assign(window._dsf,b):window._dsf[b]=a}}}dsBridge=getJsBridge();"
+        "function getJsBridge(){window._dsf=window._dsf||{};var e=0;return{call:function(b,a,c){\"function\"==typeof a&&(c=a,a={});if(\"function\"==typeof c){var d=\"dscb\"+e++;window[d]=c;a._dscbstub=d}a=JSON.stringify(a||{});return window._dswk?prompt(window._dswk+b,a):\"function\"==typeof _dsbridge?_dsbridge(b,a):_dsbridge.call(b,a)},register:function(b,a){\"object\"==typeof b?Object.assign(window._dsf,b):window._dsf[b]=a}}}dsBridge=getJsBridge();"
        this.controller.runJavaScript(script)
       // 完成DS2.0脚本的注入
       this.isDS2Injected = true
