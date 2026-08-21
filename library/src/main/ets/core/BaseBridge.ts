@@ -19,6 +19,7 @@ import { LogUtils } from '../utils/LogUtils'
 import router from '@ohos.router'
 import { IBaseBridge, IWebViewControllerProxy } from './WebViewInterface'
 import { ToastUtils } from '../utils/ToastUtils'
+import { invokeSyncNativeMethod } from '../utils/SyncCallHelper'
 import { JSON } from '@kit.ArkTS'
 
 export class BaseBridge implements JsInterface, IBaseBridge {
@@ -190,9 +191,14 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       }
 
     } else {
-      const r = method.call(obj, data);
+      // Sync throws must not escape the bridge (WebView/JS crash).
+      // Android DSBridge catches method.invoke and returns an error payload.
+      const invoked = invokeSyncNativeMethod(method, obj, data)
+      if (invoked.code !== 0) {
+        return this.handlerError(result, invoked.errMsg ?? '')
+      }
       result.code = 0
-      result.data = r
+      result.data = invoked.data
     }
 
     return this._isSupportDS2 ? result.data?.toString() : JSON.stringify(result)
