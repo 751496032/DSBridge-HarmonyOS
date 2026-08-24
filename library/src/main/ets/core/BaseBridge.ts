@@ -22,7 +22,7 @@ import { ToastUtils } from '../utils/ToastUtils'
 import { invokeSyncNativeMethod } from '../utils/SyncCallHelper'
 import { createAsyncCompleteHandler } from '../utils/AsyncCallbackHelper'
 import { resolveHasJavascriptMethod } from '../utils/HasJavascriptMethodHelper'
-
+import { parseReturnValueParam } from '../utils/ReturnValueParseHelper'
 import { JSON } from '@kit.ArkTS'
 
 export class BaseBridge implements JsInterface, IBaseBridge {
@@ -300,11 +300,11 @@ export class BaseBridge implements JsInterface, IBaseBridge {
       }
       return
     }
-    let p: {
-      id?: number,
-      complete?: boolean,
-      data?: any
-    } = JSON.parse(param)
+    // DS3: same safeParse contract as call() — malformed JSON must not
+    // throw out of @JavaScriptInterface. Log + no-op.
+    const p = parseReturnValueParam(param, (e) => {
+      LogUtils.e(e)
+    })
     if (p.id && this.handlerMap.has(p.id)) {
       let handler = this.handlerMap.get(p.id)
       handler(p.data)
