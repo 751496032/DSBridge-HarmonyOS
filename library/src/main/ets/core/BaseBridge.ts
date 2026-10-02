@@ -145,7 +145,10 @@ export class BaseBridge implements JsInterface, IBaseBridge {
     // async = (this.isNotEmpty(jsParam._dscbstub)) || async
     LogUtils.d(`call async: ${async}`)
     if (!async && this.isNotEmpty(jsParam._dscbstub)) {
-      const err = 'call failed: h5 async differs from native registration.'
+      const fullMethodName = m[0] ? `${m[0]}.${methodName}` : methodName
+      const err = `call failed: ${fullMethodName} is registered with @JavaScriptInterface(false), ` +
+        `but H5 supplied a callback. Use dsBridge.call("${fullMethodName}", data) without a callback, ` +
+        'or register an async native method with @JavaScriptInterface() and CompleteHandler.'
       return this.handlerError(result, err)
     }
     let data: string = (this.isObject(jsParam.data) ? JSON.stringify(jsParam.data) : jsParam.data) as string
