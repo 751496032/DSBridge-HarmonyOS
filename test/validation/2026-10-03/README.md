@@ -21,7 +21,7 @@
 hvigorw assembleHar --mode module -p module=library@default -p product=default -p buildMode=debug --no-daemon
 ```
 
-两次退出码均为 0，生成 `dsbridge.har`。产物尺寸、SHA-256、工具包来源与构建日志的校验值见 [manifest.json](manifest.json)。构建日志已移除本机路径及终端颜色码。
+两次退出码均为 0，生成 `dsbridge.har`。产物尺寸、SHA-256、工具包来源与构建日志的校验值见 [manifest.json](manifest.json)。构建日志已移除本机路径、终端颜色码及行尾空白，并统一为 LF 换行。
 
 两版都保留原项目 `BaseSendable.ets` 关于 `@Sendable in js har` 的警告；本次诊断修改没有调整 HAR 类型或该类。
 

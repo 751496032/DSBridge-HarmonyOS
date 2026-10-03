@@ -13,34 +13,34 @@
 > hvigor WARN: The current module 'fixed' has dependency which is not installed at its oh-package.json5.
 > hvigor WARN: The current module 'fixed' has dependency which is not installed at its oh-package.json5.
 > hvigor WARN: The current module 'fixed' has dependency which is not installed at its oh-package.json5.
-> hvigor Finished :library:clean... after 6 ms 
-> hvigor Finished :library:default@PreBuild... after 751 ms 
-> hvigor Finished :library:default@ProcessOHPackageJson... after 8 ms 
-> hvigor Finished :library:default@CreateHarBuildProfile... after 6 ms 
-> hvigor Finished :library:default@CreateHarModuleInfo... after 1 ms 
-> hvigor Finished :library:default@ConfigureCmake... after 1 ms 
-> hvigor Finished :library:default@MergeProfile... after 8 ms 
-> hvigor Finished :library:default@GeneratePkgContextInfo... after 1 ms 
-> hvigor Finished :library:default@ProcessIntegratedHsp... after 1 ms 
-> hvigor Finished :library:default@BuildNativeWithCmake... after 1 ms 
-> hvigor Finished :library:default@ProcessProfile... after 148 ms 
-> hvigor Finished :library:default@ProcessRouterMap... after 2 ms 
-> hvigor Finished :library:default@BuildNativeWithNinja... after 3 ms 
-> hvigor Finished :library:default@ProcessResource... after 2 ms 
-> hvigor Finished :library:default@GenerateLoaderJson... after 19 ms 
-> hvigor Finished :library:default@CompileResource... after 163 ms 
-> hvigor Finished :library:default@ProcessObfuscationFiles... after 1 ms 
-> hvigor Finished :library:default@ProcessLibs... after 1 s 840 ms 
-> hvigor Finished :library:default@DoNativeStrip... after 206 ms 
-> hvigor Finished :library:default@CacheNativeLibs... after 1 s 910 ms 
+> hvigor Finished :library:clean... after 6 ms
+> hvigor Finished :library:default@PreBuild... after 751 ms
+> hvigor Finished :library:default@ProcessOHPackageJson... after 8 ms
+> hvigor Finished :library:default@CreateHarBuildProfile... after 6 ms
+> hvigor Finished :library:default@CreateHarModuleInfo... after 1 ms
+> hvigor Finished :library:default@ConfigureCmake... after 1 ms
+> hvigor Finished :library:default@MergeProfile... after 8 ms
+> hvigor Finished :library:default@GeneratePkgContextInfo... after 1 ms
+> hvigor Finished :library:default@ProcessIntegratedHsp... after 1 ms
+> hvigor Finished :library:default@BuildNativeWithCmake... after 1 ms
+> hvigor Finished :library:default@ProcessProfile... after 148 ms
+> hvigor Finished :library:default@ProcessRouterMap... after 2 ms
+> hvigor Finished :library:default@BuildNativeWithNinja... after 3 ms
+> hvigor Finished :library:default@ProcessResource... after 2 ms
+> hvigor Finished :library:default@GenerateLoaderJson... after 19 ms
+> hvigor Finished :library:default@CompileResource... after 163 ms
+> hvigor Finished :library:default@ProcessObfuscationFiles... after 1 ms
+> hvigor Finished :library:default@ProcessLibs... after 1 s 840 ms
+> hvigor Finished :library:default@DoNativeStrip... after 206 ms
+> hvigor Finished :library:default@CacheNativeLibs... after 1 s 910 ms
 > hvigor WARN: ArkTS:WARN File: <validation-root>/fixed/library/src/main/ets/wait/BaseSendable.ets:5:1
  If you use @Sendable in js har, an exception will occur during runtime.
 Please use @Sendable in ts har. You can configure {"name": "UseTsHar", "value": "true"} in the "metadata" in the module.json5 file in har.
 
-> hvigor Finished :library:default@HarCompileArkTS... after 22 s 790 ms 
-> hvigor Finished :library:default@ProcessHarArtifacts... after 79 ms 
-> hvigor Finished :library:default@PackageHar... after 96 ms 
+> hvigor Finished :library:default@HarCompileArkTS... after 22 s 790 ms
+> hvigor Finished :library:default@ProcessHarArtifacts... after 79 ms
+> hvigor Finished :library:default@PackageHar... after 96 ms
 > hvigor WARN: No signingConfig found for product default
-> hvigor Finished :library:default@PackageSignHar... after 2 ms 
-> hvigor Finished :library:assembleHar... after 1 ms 
-> hvigor BUILD SUCCESSFUL in 29 s 354 ms 
+> hvigor Finished :library:default@PackageSignHar... after 2 ms
+> hvigor Finished :library:assembleHar... after 1 ms
+> hvigor BUILD SUCCESSFUL in 29 s 354 ms

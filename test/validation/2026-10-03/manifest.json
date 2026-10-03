@@ -8,7 +8,7 @@
     "passed": 42,
     "failed": 0,
     "log": "host-tests.log",
-    "logSha256": "0343dc268487096e06a8fd8a1fbc663b4055da3974d1f11001e26a2732996eba"
+    "logSha256": "514401f8a898a83cd30a861c4fa9141eb7b1656d7137755fb6ff890c8ffa534e"
   },
   "api12": {
     "environment": "Ubuntu WSL2, Linux x64, complete isolated official SDK",
@@ -36,7 +36,7 @@
         "command": "hvigorw assembleHar --mode module -p module=library@default -p product=default -p buildMode=debug --no-daemon",
         "exitCode": 0,
         "log": "baseline-api12-assembleHar.log",
-        "logSha256": "12120eb961798f5cb96f3e684050730d638108eb1a5c19613352f0cf0b1189a7",
+        "logSha256": "1383e511fe120777ea74816e59f42cf2866511c2ec313d353140e71304f34ac9",
         "harBytes": 20719,
         "harSha256": "f02597ef375c6e8252f20f86259a31fcded13585f3925c943359371be6701ed0",
         "signing": "unsigned library HAR",
@@ -47,7 +47,7 @@
         "command": "hvigorw assembleHar --mode module -p module=library@default -p product=default -p buildMode=debug --no-daemon",
         "exitCode": 0,
         "log": "candidate-api12-assembleHar.log",
-        "logSha256": "514a9b53d93bc1e1d8c2f79df834891fc5567978534bdc6d353c4a3bd824ad2b",
+        "logSha256": "4b2f0bf5da48caf551bd293ca95c13583c9558a4ddee48c71e7fea55b4710531",
         "harBytes": 21215,
         "harSha256": "b15a69d2db71d0ee2de924a32505476cabaf41ec416edfcfa4df8059252504d7",
         "signing": "unsigned library HAR",
