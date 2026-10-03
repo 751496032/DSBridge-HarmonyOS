@@ -1,0 +1,7 @@
+{
+  "string": [
+    { "name": "module_desc", "value": "Independent DSBridge ArkWeb regression" },
+    { "name": "EntryAbility_desc", "value": "Run local DS2 and DS3 regression suites" },
+    { "name": "EntryAbility_label", "value": "DSBridge 回归验证" }
+  ]
+}
