@@ -1,0 +1,64 @@
+▶ concurrent async native callbacks
+  ✔ keeps independent stubs and results for 6 out-of-order completions (8.6438ms)
+  ✔ captures _dscbstub at call time so later jsParam mutation cannot retarget (0.5342ms)
+  ✔ does not mutate a shared last-result slot when completing in parallel (0.43ms)
+  ✔ setProgressData keeps the stub; complete deletes it (0.6602ms)
+  ✔ does not dispatch JS when H5 omitted a callback stub (0.2084ms)
+✔ concurrent async native callbacks (12.509ms)
+▶ H5 callback-id allocator
+  ✔ issues unique stubs for 6 rapid allocations (0.3045ms)
+  ✔ does not collide when window.callID is reset or reused by the page (0.2258ms)
+✔ H5 callback-id allocator (0.8558ms)
+▶ production BaseBridge registration contract (DS3)
+  ✔ rejects a callback on a sync method before executing native code (437.4856ms)
+  ✔ includes the full namespace in the diagnostic (121.9224ms)
+  ✔ keeps valid sync calls and their protocol-specific payloads (81.7492ms)
+  ✔ does not reject an empty callback stub (224.7039ms)
+  ✔ preserves falsy sync results (111.7527ms)
+  ✔ preserves async native calls without a JS callback (152.5357ms)
+  ✔ preserves independent async callbacks and out-of-order completion (143.0575ms)
+  ✔ keeps progress callbacks before the final completion (67.6447ms)
+  ✔ runs the bundled H5 script against the real native dispatcher (94.4894ms)
+✔ production BaseBridge registration contract (DS3) (1437.3679ms)
+▶ production BaseBridge registration contract (DS2)
+  ✔ rejects a callback on a sync method before executing native code (46.2145ms)
+  ✔ includes the full namespace in the diagnostic (77.4611ms)
+  ✔ keeps valid sync calls and their protocol-specific payloads (35.3579ms)
+  ✔ does not reject an empty callback stub (54.8566ms)
+  ✔ preserves falsy sync results (48.1435ms)
+  ✔ preserves async native calls without a JS callback (96.1773ms)
+  ✔ preserves independent async callbacks and out-of-order completion (80.0454ms)
+  ✔ keeps progress callbacks before the final completion (53.2012ms)
+  ✔ runs the bundled H5 script against the real native dispatcher (100.118ms)
+✔ production BaseBridge registration contract (DS2) (592.1481ms)
+▶ resolveHasJavascriptMethod
+  ✔ returns false immediately when DS2 is enabled (no undefined) (0.9943ms)
+  ✔ resolves with the JS callback value and clears the timeout (0.3332ms)
+  ✔ does not hang when JS never responds; resolves false after timeout (205.3965ms)
+  ✔ ignores a late JS callback after timeout has already resolved false (209.1428ms)
+  ✔ uses the default 200–500ms timeout (0.6054ms)
+✔ resolveHasJavascriptMethod (418.4664ms)
+▶ parseReturnValueParam / returnValue DS3
+  ✔ parses a valid DS3 callback payload (0.9382ms)
+  ✔ does not throw on malformed JSON (3.1344ms)
+  ✔ logs via onError and returns {} on malformed JSON (no-op) (0.3398ms)
+  ✔ does not throw when JSON.parse would yield null or a non-object (0.184ms)
+  ✔ returnValueDS3 delivers data for a valid payload (0.37ms)
+  ✔ returnValueDS3 does not throw or invoke handlers on malformed JSON (0.2015ms)
+  ✔ keeps the handler when complete is false (progress callback) (0.2133ms)
+✔ parseReturnValueParam / returnValue DS3 (7.4893ms)
+▶ invokeSyncNativeMethod / callSync error payload
+  ✔ returns code 0 and data when the sync method succeeds (8.1651ms)
+  ✔ turns a thrown Error into handlerError payload and does not rethrow (1.1161ms)
+  ✔ turns a thrown object into handlerError payload like async call() catch (2.6538ms)
+  ✔ handlerError keeps code -1 and stringifies the CallResult (0.2123ms)
+  ✔ does not leak the exception to the caller (WebView/JS crash path) (0.379ms)
+✔ invokeSyncNativeMethod / callSync error payload (17.0304ms)
+ℹ tests 42
+ℹ suites 7
+ℹ pass 42
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3767.5324
