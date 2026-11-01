@@ -1,12 +1,12 @@
 // @ts-nocheck
+// Isolated call-id. Do not use window.callID — H5 pages reuse that name
+// and overlapping async calls then share/overwrite the same dscallN stub.
+let _dsbCallId = 0
 const bridge = {
     call: function (method, args, callback) {
         let params = {data: args === undefined ? null : args}
         if (callback != null && typeof callback == 'function') {
-            if (!window.callID) {
-                window.callID = 0
-            }
-            const callName = "dscall" + (window.callID++)
+            const callName = "dscall" + (_dsbCallId++)
             window[callName] = callback
             params["_dscbstub"] = callName
         }

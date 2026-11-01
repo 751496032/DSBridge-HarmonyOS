@@ -1,5 +1,8 @@
 function getJsBridge() {
     window._dsf = window._dsf || {};
+    // Isolated call-id. Do not use a page-owned window.dscb / window.callID
+    // counter — overlapping async calls would then reuse the same stub.
+    var dscb = 0;
     return {
         call: function (method, args, cb) {
             var ret = "";
@@ -8,8 +11,7 @@ function getJsBridge() {
                 args = {}
             }
             if (typeof cb == "function") {
-                window.dscb = window.dscb || 0;
-                var cbName = "dscb" + window.dscb++;
+                var cbName = "dscb" + dscb++;
                 window[cbName] = cb;
                 args["_dscbstub"] = cbName
             }

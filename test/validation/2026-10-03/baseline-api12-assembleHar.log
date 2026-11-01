@@ -1,0 +1,46 @@
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The current module 'baseline' has dependency which is not installed at its oh-package.json5.
+> hvigor Finished :library:clean... after 15 ms
+> hvigor Finished :library:default@PreBuild... after 930 ms
+> hvigor Finished :library:default@ProcessOHPackageJson... after 8 ms
+> hvigor Finished :library:default@CreateHarBuildProfile... after 2 ms
+> hvigor Finished :library:default@CreateHarModuleInfo... after 1 ms
+> hvigor Finished :library:default@ConfigureCmake... after 1 ms
+> hvigor Finished :library:default@MergeProfile... after 19 ms
+> hvigor Finished :library:default@GeneratePkgContextInfo... after 1 ms
+> hvigor Finished :library:default@ProcessIntegratedHsp... after 2 ms
+> hvigor Finished :library:default@BuildNativeWithCmake... after 1 ms
+> hvigor Finished :library:default@ProcessProfile... after 400 ms
+> hvigor Finished :library:default@ProcessRouterMap... after 2 ms
+> hvigor Finished :library:default@BuildNativeWithNinja... after 2 ms
+> hvigor Finished :library:default@ProcessResource... after 72 ms
+> hvigor Finished :library:default@GenerateLoaderJson... after 31 ms
+> hvigor Finished :library:default@CompileResource... after 213 ms
+> hvigor Finished :library:default@ProcessObfuscationFiles... after 1 ms
+> hvigor Finished :library:default@ProcessLibs... after 3 s 897 ms
+> hvigor Finished :library:default@DoNativeStrip... after 698 ms
+> hvigor Finished :library:default@CacheNativeLibs... after 2 s 324 ms
+> hvigor WARN: ArkTS:WARN File: <validation-root>/baseline/library/src/main/ets/wait/BaseSendable.ets:5:1
+ If you use @Sendable in js har, an exception will occur during runtime.
+Please use @Sendable in ts har. You can configure {"name": "UseTsHar", "value": "true"} in the "metadata" in the module.json5 file in har.
+
+> hvigor Finished :library:default@HarCompileArkTS... after 33 s 650 ms
+> hvigor Finished :library:default@ProcessHarArtifacts... after 143 ms
+> hvigor Finished :library:default@PackageHar... after 118 ms
+> hvigor WARN: No signingConfig found for product default
+> hvigor Finished :library:default@PackageSignHar... after 2 ms
+> hvigor Finished :library:assembleHar... after 5 ms
+> hvigor BUILD SUCCESSFUL in 47 s 253 ms

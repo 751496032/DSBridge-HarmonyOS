@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "state": "complete",
+  "origin": "native-aggregate-of-arkweb-reports",
+  "pendingModes": [],
+  "passed": 27,
+  "failed": 0,
+  "suites": [
+    {
+      "schemaVersion": 1,
+      "mode": "DS3",
+      "origin": "arkweb-javascript",
+      "state": "complete",
+      "passed": 14,
+      "failed": 0,
+      "durationMs": 724,
+      "cases": [
+        {
+          "name": "real ArkWeb proxy and bundled bridge ready",
+          "status": "pass",
+          "durationMs": 3
+        },
+        {
+          "name": "sync object parameters preserve documented mode",
+          "status": "pass",
+          "durationMs": 3
+        },
+        {
+          "name": "sync native with JS callback rejected before invocation",
+          "status": "pass",
+          "durationMs": 83
+        },
+        {
+          "name": "namespaced sync callback mismatch reports full namespace",
+          "status": "pass",
+          "durationMs": 84
+        },
+        {
+          "name": "namespaced valid sync still works",
+          "status": "pass",
+          "durationMs": 2
+        },
+        {
+          "name": "normal async native callback and payload",
+          "status": "pass",
+          "durationMs": 46
+        },
+        {
+          "name": "async progress precedes completion and completed stub is removed",
+          "status": "pass",
+          "durationMs": 91
+        },
+        {
+          "name": "concurrent async callbacks preserve out-of-order values",
+          "status": "pass",
+          "durationMs": 154
+        },
+        {
+          "name": "page-owned callID counters cannot collide with callbacks",
+          "status": "pass",
+          "durationMs": 103
+        },
+        {
+          "name": "async native without JS callback remains fire-and-forget",
+          "status": "pass",
+          "durationMs": 105
+        },
+        {
+          "name": "zero argument sync result remains supported",
+          "status": "pass",
+          "durationMs": 2
+        },
+        {
+          "name": "falsy sync values remain supported",
+          "status": "pass",
+          "durationMs": 4
+        },
+        {
+          "name": "DS3 primitive data is forwarded without JSON wrapping",
+          "status": "pass",
+          "durationMs": 2
+        },
+        {
+          "name": "no uncaught JavaScript / callback dispatch errors",
+          "status": "pass",
+          "durationMs": 40
+        }
+      ],
+      "jsErrors": []
+    },
+    {
+      "schemaVersion": 1,
+      "mode": "DS2",
+      "origin": "arkweb-javascript",
+      "state": "complete",
+      "passed": 13,
+      "failed": 0,
+      "durationMs": 772,
+      "cases": [
+        {
+          "name": "real ArkWeb proxy and bundled bridge ready",
+          "status": "pass",
+          "durationMs": 2
+        },
+        {
+          "name": "sync object parameters preserve documented mode",
+          "status": "pass",
+          "durationMs": 5
+        },
+        {
+          "name": "sync native with JS callback rejected before invocation",
+          "status": "pass",
+          "durationMs": 89
+        },
+        {
+          "name": "normal async native callback and payload",
+          "status": "pass",
+          "durationMs": 55
+        },
+        {
+          "name": "async progress precedes completion and completed stub is removed",
+          "status": "pass",
+          "durationMs": 100
+        },
+        {
+          "name": "concurrent async callbacks preserve out-of-order values",
+          "status": "pass",
+          "durationMs": 173
+        },
+        {
+          "name": "page-owned callID counters cannot collide with callbacks",
+          "status": "pass",
+          "durationMs": 114
+        },
+        {
+          "name": "async native without JS callback remains fire-and-forget",
+          "status": "pass",
+          "durationMs": 129
+        },
+        {
+          "name": "zero argument sync result remains supported",
+          "status": "pass",
+          "durationMs": 9
+        },
+        {
+          "name": "falsy sync values remain supported",
+          "status": "pass",
+          "durationMs": 10
+        },
+        {
+          "name": "DS2 sync receives original JSON rather than DS3 data unwrapping",
+          "status": "pass",
+          "durationMs": 7
+        },
+        {
+          "name": "DS2 async strips stub but preserves ordinary data field",
+          "status": "pass",
+          "durationMs": 31
+        },
+        {
+          "name": "no uncaught JavaScript / callback dispatch errors",
+          "status": "pass",
+          "durationMs": 40
+        }
+      ],
+      "jsErrors": []
+    }
+  ]
+}

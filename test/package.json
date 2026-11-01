@@ -1,0 +1,11 @@
+{
+  "name": "dsbridge-harmonyos-host-tests",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "reflect-metadata": "0.1.13",
+    "typescript": "5.8.3"
+  }
+}

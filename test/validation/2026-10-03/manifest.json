@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "validationDate": "2026-10-03",
+  "productionSourceUnchangedSince": "fba61881a02a00d2d30a29b49a31f55dd626f010",
+  "host": {
+    "command": "node --test",
+    "nodeVersion": "24.19.0",
+    "passed": 42,
+    "failed": 0,
+    "log": "host-tests.log",
+    "logSha256": "514401f8a898a83cd30a861c4fa9141eb7b1656d7137755fb6ff890c8ffa534e"
+  },
+  "api12": {
+    "environment": "Ubuntu WSL2, Linux x64, complete isolated official SDK",
+    "commandLineTools": "5.0.3.906",
+    "hvigor": "5.8.9",
+    "ohpm": "5.0.8",
+    "node": "18.20.1",
+    "sdk": {
+      "name": "HarmonyOS 5.0.0 Release",
+      "api": 12,
+      "etsVersion": "5.0.0.71",
+      "toolchainsVersion": "5.0.0.71",
+      "compatible": "5.0.0(12)",
+      "target": "5.0.0(12)"
+    },
+    "officialArchive": {
+      "url": "https://repo.huaweicloud.com/harmonyos/ohpm/5.0.3/commandline-tools-linux-x64-5.0.3.906.zip",
+      "checksumUrl": "https://repo.huaweicloud.com/harmonyos/ohpm/5.0.3/commandline-tools-linux-x64-5.0.3.906.zip.sha256",
+      "sha256": "c6fe61299e1b05e4023e643a319ee74c3eb369af7edecd5c3f1795b16f9db6af",
+      "verifiedAgainstOfficialChecksum": true
+    },
+    "builds": {
+      "baseline": {
+        "sourceCommit": "83fbbddb6de6be42136b86c5f271216279aa8701",
+        "command": "hvigorw assembleHar --mode module -p module=library@default -p product=default -p buildMode=debug --no-daemon",
+        "exitCode": 0,
+        "log": "baseline-api12-assembleHar.log",
+        "logSha256": "1383e511fe120777ea74816e59f42cf2866511c2ec313d353140e71304f34ac9",
+        "harBytes": 20719,
+        "harSha256": "f02597ef375c6e8252f20f86259a31fcded13585f3925c943359371be6701ed0",
+        "signing": "unsigned library HAR",
+        "sourceSettingsChanged": "Only local developer signing removed; original API12 target and compatibility preserved"
+      },
+      "candidate": {
+        "sourceCommit": "fba61881a02a00d2d30a29b49a31f55dd626f010",
+        "command": "hvigorw assembleHar --mode module -p module=library@default -p product=default -p buildMode=debug --no-daemon",
+        "exitCode": 0,
+        "log": "candidate-api12-assembleHar.log",
+        "logSha256": "4b2f0bf5da48caf551bd293ca95c13583c9558a4ddee48c71e7fea55b4710531",
+        "harBytes": 21215,
+        "harSha256": "b15a69d2db71d0ee2de924a32505476cabaf41ec416edfcfa4df8059252504d7",
+        "signing": "unsigned library HAR",
+        "sourceSettingsChanged": "Only local developer signing removed; original API12 target and compatibility preserved"
+      }
+    },
+    "sharedWarning": "@Sendable in js har; warning occurs on both baseline and candidate in original BaseSendable.ets"
+  },
+  "arkweb": {
+    "device": "Huawei Mate (BRA-AL00)",
+    "runtimeApi": 23,
+    "systemVersion": "BRA-AL00 6.1.0.105(SP36C01E105R8P8)",
+    "compileSdk": "HarmonyOS 6.1.1 API24 Release",
+    "targetSdk": "5.0.0(12)",
+    "compatibleSdk": "5.0.0(12)",
+    "integration": "Real Web.javaScriptProxy, production source dependency, bundled DSBridge2/3 scripts, local rawfile pages",
+    "expectedCaseCounts": {
+      "DS3": 14,
+      "DS2": 13
+    },
+    "runs": {
+      "baseline": {
+        "sourceCommit": "83fbbddb6de6be42136b86c5f271216279aa8701",
+        "sourceBaseBridgeGitBlob": "213d671985a10526176ec569cf305520b0d9f15b",
+        "sourceBaseBridgeSha256": "18b93f131e8a6a88b7105311deac2b80fd52dda0f67e5dab4e8226c4d267ca34",
+        "hapSha256": "ee0d05d8cc5578076dd3a37ea1332aca8ec67843dcad54cb160fa66c618d7fa5",
+        "report": "baseline-arkweb.json",
+        "reportSha256": "3c5c81b108b3bc1207a651871bd33e6c1e6fb049504ca9abba0beed8460786a3",
+        "startedAtUtc": "2026-10-03T14:01:50.7488435+00:00",
+        "finishedAtUtc": "2026-10-03T14:02:14.3266332+00:00",
+        "state": "failed",
+        "passed": 24,
+        "failed": 3,
+        "suites": [
+          {
+            "mode": "DS3",
+            "origin": "arkweb-javascript",
+            "state": "complete",
+            "passed": 12,
+            "failed": 2,
+            "durationMs": 727
+          },
+          {
+            "mode": "DS2",
+            "origin": "arkweb-javascript",
+            "state": "complete",
+            "passed": 12,
+            "failed": 1,
+            "durationMs": 742
+          }
+        ],
+        "originalAppRestored": true,
+        "restoredHapHashMatchesBackup": true,
+        "appDataCleared": false
+      },
+      "candidate": {
+        "sourceCommit": "fba61881a02a00d2d30a29b49a31f55dd626f010",
+        "sourceBaseBridgeGitBlob": "d9509afd2f4a9a90d9a039726a2750df1943f942",
+        "sourceBaseBridgeSha256": "bb356a9161d64d623161521b0be857901757f27bcc755ef22dee1755adffc421",
+        "hapSha256": "404706779b6be3b1bb4a768da7441a204af17e864a53a76a7438e5932ed854c4",
+        "report": "candidate-arkweb.json",
+        "reportSha256": "273a22e02fcabdc42255e449a7058cbf31981125b6dda69d3e9b41ecfc9c1087",
+        "startedAtUtc": "2026-10-03T14:02:35.1607484+00:00",
+        "finishedAtUtc": "2026-10-03T14:03:01.2789943+00:00",
+        "state": "complete",
+        "passed": 27,
+        "failed": 0,
+        "suites": [
+          {
+            "mode": "DS3",
+            "origin": "arkweb-javascript",
+            "state": "complete",
+            "passed": 14,
+            "failed": 0,
+            "durationMs": 724
+          },
+          {
+            "mode": "DS2",
+            "origin": "arkweb-javascript",
+            "state": "complete",
+            "passed": 13,
+            "failed": 0,
+            "durationMs": 772
+          }
+        ],
+        "originalAppRestored": true,
+        "restoredHapHashMatchesBackup": true,
+        "appDataCleared": false
+      }
+    },
+    "candidateScreenshot": "candidate-arkweb.jpeg",
+    "candidateScreenshotSha256": "560db0e7994a1b2654bdb1838b984950d395a128ba750dae0ff628dcbca3db2c",
+    "publishedHarnessMatchesActualDeviceFixture": true,
+    "harnessFiles": [
+      {
+        "path": "AppScope/app.json5",
+        "sha256LfNormalized": "9788bd6abb6dde4f58507c60e2756f210ad71726977d0ddc72c512450519ee98"
+      },
+      {
+        "path": "AppScope/resources/base/element/string.json",
+        "sha256LfNormalized": "7fc2ad3118c976e953bf9ca5a0c96146b5798b719b532e64a524ae9d092e22fb"
+      },
+      {
+        "path": "entry/src/main/ets/entryability/EntryAbility.ets",
+        "sha256LfNormalized": "f295becd06722fc9da593492ac062239f807551facd03fdd1ff456510ad39e9e"
+      },
+      {
+        "path": "entry/src/main/ets/pages/Index.ets",
+        "sha256LfNormalized": "af889a092c417bc04a3720eab9eda321b2f28252fc19c54b06f07ba2d575408c"
+      },
+      {
+        "path": "entry/src/main/ets/regression/RegressionNativeApi.ets",
+        "sha256LfNormalized": "ada3068839608f9bb96ea4eeeb7561ff66daadb5b2a8d0fc067b0d911d20e48c"
+      },
+      {
+        "path": "entry/src/main/ets/regression/RegressionRunStore.ts",
+        "sha256LfNormalized": "e5b4e5b908e8d33b9d17322f9347bdeb6fd90894ae71efdd28fd46b472385aac"
+      },
+      {
+        "path": "entry/src/main/module.json5",
+        "sha256LfNormalized": "25774dff42883890536468ceb9116c5666b81ce8624333b2edabd040b131da5f"
+      },
+      {
+        "path": "entry/src/main/resources/base/element/color.json",
+        "sha256LfNormalized": "565bb752825ca087e81f2b3a6dd37540f9d7dfd8720c40a75749602a95f81f06"
+      },
+      {
+        "path": "entry/src/main/resources/base/element/string.json",
+        "sha256LfNormalized": "6e0a5a561ac93a676e421ae85c5a147e0f0b03cfbbc32df337ff2bfc72ac3620"
+      },
+      {
+        "path": "entry/src/main/resources/base/profile/main_pages.json",
+        "sha256LfNormalized": "4ca3fb089a34d7f463b3af626b3d472b4ae5b2021c64606d272c926535fe0814"
+      },
+      {
+        "path": "entry/src/main/resources/rawfile/ds2.html",
+        "sha256LfNormalized": "ed9f813c59fe5b0b4a082fa796d9283a54245f78ef662b7836202d86133ddca0"
+      },
+      {
+        "path": "entry/src/main/resources/rawfile/ds3.html",
+        "sha256LfNormalized": "f84f3c153bbc88bb9e93144ab6fc6ee9eb6db0ae03e02476121219dce70b8175"
+      },
+      {
+        "path": "entry/src/main/resources/rawfile/regression.js",
+        "sha256LfNormalized": "917d97e932d8a326a34f31dc67b075131d25ca90454957dd869a7ca7397d2092"
+      }
+    ]
+  },
+  "limitations": [
+    "API12 library HAR compilation and ArkWeb runtime validation are separate checks.",
+    "The physical phone runs API23; no API12 operating-system runtime or API12 HAR consumption is claimed.",
+    "Certificates, profiles, private keys, device identifiers and signed HAP files are excluded."
+  ]
+}

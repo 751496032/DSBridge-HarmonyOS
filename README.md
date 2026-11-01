@@ -443,7 +443,23 @@ export class Param  extends BaseSendable{
 
 ```
 
-## 联系
+### H5 回调与原生注册方式不一致
+
+使用 `@JavaScriptInterface(false)` 注册的同步原生方法，需要从 `dsBridge.call()` 的返回值读取结果，不要传入 callback：
+
+```javascript
+// testSync 在原生侧使用 @JavaScriptInterface(false) 注册
+const result = dsBridge.call('testSync', { message: 'hello' });
+
+// 错误：同步原生方法不能通过 callback 获取结果
+dsBridge.call('testSync', { message: 'hello' }, function (result) {});
+```
+
+第二种调用会被拒绝，原生业务方法不会执行，callback 也不会被调用。通过 `setGlobalErrorMessageListener()` 可以收到包含完整方法名（含命名空间）、原生注册方式和修正建议的错误信息。不要依赖错误调用的返回值或等待 callback。
+
+如果需要 callback，请另行注册使用 `@JavaScriptInterface()` 的异步原生方法，并通过 `CompleteHandler.complete()` 返回结果。这一校验同样适用于 DSBridge2.0 和 3.0；DSBridge2.0 的调用参数仍按其原有格式传递。
+
+## 交流
 
  **欢迎大家提交issue、PR等建议（可以统一收集问题，方便更多人查阅，会第一时间回复处理）** ，或进群交流(+wx: 751496032)。
 
