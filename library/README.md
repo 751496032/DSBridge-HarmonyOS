@@ -7,7 +7,6 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 
 特性：
 
-- **已适配鸿蒙NEXT版本；**
 - **支持原生同步方法内执行串行异步并发任务，同步等待异步结果，根据鸿蒙特点设计的需求；**
 - **同时支持DSBridge2.0与3.0 JS脚本；**
 - 支持以类的方式集中统一管理API，也支持在原生自定义页面组件中直接注册使用；
@@ -459,15 +458,11 @@ dsBridge.call('testSync', { message: 'hello' }, function (result) {});
 
 如果需要 callback，请另行注册使用 `@JavaScriptInterface()` 的异步原生方法，并通过 `CompleteHandler.complete()` 返回结果。这一校验同样适用于 DSBridge2.0 和 3.0；DSBridge2.0 的调用参数仍按其原有格式传递。
 
-## 交流
+## 联系
 
-如有疑问，请提issues, 或加v进群交流：751496032，备注鸿蒙
+如有疑问可提issues或加友，备注鸿蒙。
 
-
-## 最后
-
-感谢[@name718](https://github.com/name718)、[@fjc0k](https://github.com/fjc0k)等各位大佬的支持与反馈。欢迎大家多多反馈，一起支持完善鸿蒙生态。
-
+<img alt="微信二维码" height="200" src="https://img.naixiai.cn/20261101/wx-me-code.png" width="200"/>
 
 
 

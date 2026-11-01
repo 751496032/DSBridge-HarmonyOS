@@ -7,20 +7,28 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 
 特性：
 
-- **已适配鸿蒙NEXT版本；**
 - **支持原生同步方法内执行串行异步并发任务，同步等待异步结果，根据鸿蒙特点设计的需求；**
-- **兼容DSBridge2.0与3.0 JS脚本；**
-- 支持以类的方式集中统一管理API，也支持原生自定义页面组件直接注册使用；
+- **同时支持DSBridge2.0与3.0 JS脚本；**
+- 支持以类的方式集中统一管理API，也支持在原生自定义页面组件中直接注册使用；
 - 支持同步和异步调用；
 - 支持进度回调/回传：一次调用，多次返回；
 - 支持API是否存在检测；
 - 支持Javascript关闭页面的监听与拦截，
+- 支持异常信息监听;
 - 支持命名空间API。
+
+
+
+DSBridge-HarmonyOS已上架录入到[华为鸿蒙生态伙伴组件专区](https://developer.huawei.com/consumer/cn/market/landing/component)
+
+![鸿蒙生态市场](https://gitee.com/common-apps/images/raw/master/oh.png)
+
 
 
 源码：
 
-* [DSBridge-HarmonyOS](https://github.com/751496032/DSBridge-HarmonyOS)
+* github：[DSBridge-HarmonyOS](https://github.com/751496032/DSBridge-HarmonyOS)
+* gitee: [DSBridge-HarmonyOS](https://gitee.com/common-apps/dsbrigde-harmony-os)
 * [DSBridge-Android](https://github.com/wendux/DSBridge-Android)
 * [DSBridge-IOS](https://github.com/wendux/DSBridge-IOS)
 
@@ -36,11 +44,6 @@ HarmonyOS版的DSBridge，通过本库可以在鸿蒙原生与JavaScript完成�
 ohpm install @hzw/ohos-dsbridge
 ```
 
-或者安装本地har包
-
-```text
-ohpm install ../libs/library.har
-```
 
 ## 基本用法
 
@@ -187,6 +190,8 @@ npm i m-dsbridge
 https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js
 ```
 
+> 如果m-dsbridge 发生异常，建议切换到 https://cdn.jsdelivr.net/npm/dsbridge/dist/dsbridge.js
+
 2、通过`dsBridge`对象注册Js函数，供原生调用。
 
 ```typescript
@@ -224,8 +229,13 @@ dsBridge.registerAsyn('showAlertAsync', function (a, b, c, callback) {
 // 同步
 let msg = dsBridge.call('testSync', JSON.stringify({data: 100}))
 
-// 异步
+// 异步, 参数可以是对象或者基本类型
 dsBridge.call('testAsync', JSON.stringify({data: 200}), (msg) => {
+  updateMsg(msg)
+})
+
+// 如果你使用的是DSBridge 2.0脚本，异步调用的参数必须是一个对象
+dsBridge.call('testAsync', {data: 200}, (msg) => {
   updateMsg(msg)
 })
 ```
@@ -420,13 +430,39 @@ export class Param  extends BaseSendable{
 
 `taskWait()`函数是一个轻量级的同步等待函数，不建议执行耗时过长的任务，如果在3s内没有完成任务，会自动结束等待将结果返回，可能会存在数据丢失的情况；对于特别耗时的任务建议使用异步桥接函数。
 
+## 监听异常
+
+可以通过setGlobalErrorMessageListener()方法来监听调用异常，如下：
 
 
+```typescript
+    this.controller.setGlobalErrorMessageListener((err: string) => {
+      promptAction.showDialog({title:`${err}`})
+    })
 
-## 最后
+```
 
-感谢[@name718](https://github.com/name718)、[@fjc0k](https://github.com/fjc0k)等各位大佬的支持与反馈。欢迎大家多多反馈，一起支持完善鸿蒙生态。
+### H5 回调与原生注册方式不一致
 
+使用 `@JavaScriptInterface(false)` 注册的同步原生方法，需要从 `dsBridge.call()` 的返回值读取结果，不要传入 callback：
+
+```javascript
+// testSync 在原生侧使用 @JavaScriptInterface(false) 注册
+const result = dsBridge.call('testSync', { message: 'hello' });
+
+// 错误：同步原生方法不能通过 callback 获取结果
+dsBridge.call('testSync', { message: 'hello' }, function (result) {});
+```
+
+第二种调用会被拒绝，原生业务方法不会执行，callback 也不会被调用。通过 `setGlobalErrorMessageListener()` 可以收到包含完整方法名（含命名空间）、原生注册方式和修正建议的错误信息。不要依赖错误调用的返回值或等待 callback。
+
+如果需要 callback，请另行注册使用 `@JavaScriptInterface()` 的异步原生方法，并通过 `CompleteHandler.complete()` 返回结果。这一校验同样适用于 DSBridge2.0 和 3.0；DSBridge2.0 的调用参数仍按其原有格式传递。
+
+## 联系
+
+如有疑问可提issues或加友，备注鸿蒙。
+
+<img alt="微信二维码" height="200" src="https://img.naixiai.cn/20261101/wx-me-code.png" width="200"/>
 
 
 

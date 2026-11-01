@@ -7,10 +7,10 @@
         "material": {
           // h123456789
           "storePassword": "0000001A31E60F5AB0A6681B2BF4B22D7264B2658107C2737EF2E4D9E51B76B3179471B24143930EF60C",
-          "certpath": "./config/dsbridge.cer",
+          "certpath": "./config/dsbridge-261101.cer",
           "keyAlias": "hzw",
           "keyPassword": "0000001AE1DD81366E373F816ED64C8D2F190F7A5A1FBAE6CB5D9801F7B23FDDD765F1E761C5B7FEDFDA",
-          "profile": "./config/dsbridge.p7b",
+          "profile": "./config/dsbridge-261101Debug.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "./config/dsbridge.p12"
         }
